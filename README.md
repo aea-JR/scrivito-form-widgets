@@ -16,26 +16,26 @@ A set of Scrivito Widgets for building awesome forms
 Install the package in your scrivito app:
 
 ```shell
-npm install scrivito-form-test
+npm install scrivito-form-widgets
 ```
 
 Import the widget in your javascript (e.g. in `src/index.js` or `src/Widgets/index.js`):
 
 ```js
-import "scrivito-form-test";
+import "scrivito-form-widgets";
 ```
 
 Add the styling of the widget to your app. 
 This can be done by either loading it via `css-loader` (e.g. in `src/index.js` or `src/Widgets/index.js`):
 
 ```js
-import "scrivito-form-test/index.css";
+import "scrivito-form-widgets/index.css";
 ```
 
  Or by including the styling to your stylesheets (e.g. in `src/assets/stylesheets/index.scss`):
 
 ```scss
-@import "~scrivito-form-test/index.css";
+@import "~scrivito-form-widgets/index.css";
 ```
 
 Delete all Form Widgets contained in the Widgets folder:
@@ -47,7 +47,7 @@ Delete all Form Widgets contained in the Widgets folder:
 
 Navigate to the config folder in your Scrivito App and create a new file called formConfig.js or similar and paste the below code inside of it
 ```js
-import { setScrivitoFormWidgetConfig } from "scrivito-form-test";
+import { setScrivitoFormWidgetConfig } from "scrivito-form-widgets";
 
 export function configureForm() {
     setScrivitoFormWidgetConfig(process.env.SCRIVITO_TENANT);

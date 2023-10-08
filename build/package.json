@@ -1,6 +1,6 @@
 {
   "name": "scrivito-form-widgets",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "A set of Scrivito form widgets",
   "main": "index.js",
   "scripts": {
@@ -55,6 +55,14 @@
     "sass-loader": "^13.3.2",
     "style-loader": "^3.3.3",
     "url-loader": "^3.0.0"
-  }
- 
+  },
+
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aea-JR/scrivito-form-widgets.git"
+  },
+  "bugs": {
+    "url": "https://github.com/aea-JR/scrivito-form-widgets/issues"
+  },
+  "homepage": "https://github.com/aea-JR/scrivito-form-widgets#readme"
 }
