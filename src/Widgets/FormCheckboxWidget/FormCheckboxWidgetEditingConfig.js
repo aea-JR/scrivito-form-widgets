@@ -1,5 +1,5 @@
 import * as Scrivito from "scrivito";
- import formCheckboxWidgetIcon from "../../assets/images/form_checkbox_widget.svg";
+import formCheckboxWidgetIcon from "../../assets/images/form_checkbox_widget.svg";
 import { isCustomType } from "../FormContainerWidget/utils/isCustomType";
 import { customFieldNameValidation } from "../FormContainerWidget/utils/validations/customFieldNameValidation";
 import { typeValidation } from "../FormContainerWidget/utils/validations/typeValidation";
@@ -7,7 +7,7 @@ import { insideFormContainerValidation } from "../FormContainerWidget/utils/vali
 import { getScrivitoFormWidgetConfig } from "../../config/scrivitoConfig";
 Scrivito.provideEditingConfig("FormCheckboxWidget", {
   title: "Form Checkbox",
-   thumbnail: formCheckboxWidgetIcon,
+  thumbnail: formCheckboxWidgetIcon,
   attributes: {
     required: { title: "Mandatory" },
     type: {

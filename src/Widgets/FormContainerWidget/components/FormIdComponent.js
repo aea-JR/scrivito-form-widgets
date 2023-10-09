@@ -6,7 +6,7 @@ import { getScrivitoFormWidgetConfig } from "../../../config/scrivitoConfig";
 export const FormIdComponent = Scrivito.connect(({ widget }) => {
   const formSubmissionsHref = widget.get("formId")
     ? `https://edit.neoletter.com/i/${
-      getScrivitoFormWidgetConfig().tenant
+        getScrivitoFormWidgetConfig().tenant
       }/forms/${widget.get("formId")}`
     : null;
   const uiContext = Scrivito.uiContext();
@@ -16,7 +16,7 @@ export const FormIdComponent = Scrivito.connect(({ widget }) => {
     <div className={`scrivito_${uiContext.theme}`}>
       <div className="scrivito_detail_content">
         <div className="attribute_form_id_item">
-           <ContentProperty
+          <ContentProperty
             content={widget}
             attribute="formId"
             title="Form ID"

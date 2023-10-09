@@ -1,10 +1,10 @@
 import * as Scrivito from "scrivito";
- import formHiddenFieldWidgetIcon from "../../assets/images/form_hidden_field_widget.svg";
- import { customFieldNameValidation } from "../FormContainerWidget/utils/validations/customFieldNameValidation";
+import formHiddenFieldWidgetIcon from "../../assets/images/form_hidden_field_widget.svg";
+import { customFieldNameValidation } from "../FormContainerWidget/utils/validations/customFieldNameValidation";
 //TODO: add/check insideFormValidation
 Scrivito.provideEditingConfig("FormHiddenFieldWidget", {
   title: "Hidden Form Field",
-   thumbnail: formHiddenFieldWidgetIcon,
+  thumbnail: formHiddenFieldWidgetIcon,
   attributes: {
     customFieldName: { title: "Field name" },
     hiddenValue: {
@@ -17,7 +17,7 @@ Scrivito.provideEditingConfig("FormHiddenFieldWidget", {
     customFieldName: "custom_hidden_field",
   },
   validations: [
-     customFieldNameValidation,
+    customFieldNameValidation,
     (widget) => {
       if (
         widget

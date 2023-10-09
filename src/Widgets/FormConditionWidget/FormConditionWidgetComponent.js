@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as Scrivito from "scrivito";
- import { InPlaceEditingPlaceholder } from "../../Components/InPlaceEditingPlaceholder";
- import "./FormConditionWidget.scss";
+import { InPlaceEditingPlaceholder } from "../../Components/InPlaceEditingPlaceholder";
+import "./FormConditionWidget.scss";
 
 Scrivito.provideComponent("FormConditionWidget", ({ widget, getData }) => {
   const data = getData ? getData(widget.id()) : { isActive: false };

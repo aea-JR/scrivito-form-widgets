@@ -1,12 +1,12 @@
 import * as Scrivito from "scrivito";
- import formInputFieldWidgetIcon from "../../assets/images/form_input_field_widget.svg";
+import formInputFieldWidgetIcon from "../../assets/images/form_input_field_widget.svg";
 import { isCustomType } from "../FormContainerWidget/utils/isCustomType";
 import { customFieldNameValidation } from "../FormContainerWidget/utils/validations/customFieldNameValidation";
 import { typeValidation } from "../FormContainerWidget/utils/validations/typeValidation";
 import { insideFormContainerValidation } from "../FormContainerWidget/utils/validations/insideFormContainerValidation";
 Scrivito.provideEditingConfig("FormInputFieldWidget", {
   title: "Form Input Field",
-   thumbnail: formInputFieldWidgetIcon,
+  thumbnail: formInputFieldWidgetIcon,
   attributes: {
     required: { title: "Mandatory" },
     type: {

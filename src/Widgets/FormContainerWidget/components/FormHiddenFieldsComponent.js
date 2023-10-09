@@ -1,13 +1,13 @@
 import * as React from "react";
 import * as Scrivito from "scrivito";
- import { getHistory } from "../../../config/history";
+import { getHistory } from "../../../config/history";
 
 export const FormHiddenFields = ({ widget }) => {
   const [browserLocation, setBrowserLocation] = React.useState(null);
   React.useEffect(() => {
     const history = getHistory();
-    console.log("And the history is....")
-    console.log(history)
+    console.log("And the history is....");
+    console.log(history);
     if (!history) return;
     setBrowserLocation(locationToUrl(history.location));
 
