@@ -7,7 +7,7 @@ import { getFormContainer } from "./utils/getFormContainer";
 import { FormStepWidget } from "../FormStepWidget/FormStepWidgetClass";
 import { FormSelectWidget } from "../FormSelectWidget/FormSelectWidgetClass";
 import { FormRatingWidget } from "../FormRatingWidget/FormRatingWidgetClass";
-
+import { getScrivitoFormWidgetConfig } from "../../config/scrivitoConfig";
 Scrivito.provideEditingConfig("FormContainerWidget", {
   title: "Form",
   thumbnail: formContainerWidgetIcon,
@@ -171,6 +171,11 @@ Scrivito.provideEditingConfig("FormContainerWidget", {
     (widget) => {
       if (widget.get("steps").length < 2) {
         return "The form must include at least two steps.";
+      }
+    },
+    () => {
+      if (!getScrivitoFormWidgetConfig().tenant) {
+        return "No tenant specified for form widgets.";
       }
     },
 

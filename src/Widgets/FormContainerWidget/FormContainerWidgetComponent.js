@@ -8,11 +8,15 @@ import "./FormContainerWidget.scss";
 import { getScrivitoFormWidgetConfig } from "../../config/scrivitoConfig";
 
 Scrivito.provideComponent("FormContainerWidget", ({ widget }) => {
-const tenant = getScrivitoFormWidgetConfig().tenant;
-if(!tenant) {
-  return <div>Warning, tenant has not been configured for the form widget.</div>
-}
-const formEndpoint = `https://api.justrelate.com/neoletter/instances/${tenant}/form_submissions`;
+  const tenant = getScrivitoFormWidgetConfig().tenant;
+  if (!tenant) {
+    return (
+      <span className="missing-tenant">
+        Warning! tenant has not been configured for the form widget.
+      </span>
+    );
+  }
+  const formEndpoint = `https://api.justrelate.com/neoletter/instances/${tenant}/form_submissions`;
   const [currentStep, setCurrentStepNumber] = React.useState(1);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [successfullySent, setSuccessfullySent] = React.useState(false);
