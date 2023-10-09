@@ -1,10 +1,7 @@
 import * as Scrivito from "scrivito";
 import loadable from "@loadable/component";
- import formContainerWidgetIcon from "../../assets/images/form_container_widget.svg";
-// import { ColumnContainerWidget } from "../ColumnContainerWidget/ColumnContainerWidgetClass";
-// import { ColumnWidget } from "../ColumnWidget/ColumnWidgetClass";
+import formContainerWidgetIcon from "../../assets/images/form_container_widget.svg";
 import { FormInputFieldWidget } from "../FormInputFieldWidget/FormInputFieldWidgetClass";
-// import { TextWidget } from "../TextWidget/TextWidgetClass";
 import { pseudoRandom32CharHex } from "./utils/pseudoRandom32CharHex";
 import { getFormContainer } from "./utils/getFormContainer";
 import { FormStepWidget } from "../FormStepWidget/FormStepWidgetClass";
@@ -13,7 +10,7 @@ import { FormRatingWidget } from "../FormRatingWidget/FormRatingWidgetClass";
 
 Scrivito.provideEditingConfig("FormContainerWidget", {
   title: "Form",
-   thumbnail: formContainerWidgetIcon,
+  thumbnail: formContainerWidgetIcon,
   attributes: {
     formId: {
       title: "Form ID",
@@ -105,21 +102,18 @@ Scrivito.provideEditingConfig("FormContainerWidget", {
       "We are sorry, your request could not be completed. Please try again later.",
     formType: "single-step",
     singleStepContent: () => [
-
-              new FormInputFieldWidget({
-                type: "given_name",
-                label: "First name",
-                placeholder: "Your first name",
-                required: true,
-              }),
-
-        
-              new FormInputFieldWidget({
-                type: "family_name",
-                label: "Last name",
-                placeholder: "Your last name",
-                required: true,
-              }),
+      new FormInputFieldWidget({
+        type: "given_name",
+        label: "First name",
+        placeholder: "Your first name",
+        required: true,
+      }),
+      new FormInputFieldWidget({
+        type: "family_name",
+        label: "Last name",
+        placeholder: "Your last name",
+        required: true,
+      }),
 
       new FormInputFieldWidget({
         label: "Email",
@@ -141,9 +135,6 @@ Scrivito.provideEditingConfig("FormContainerWidget", {
         placeholder: "Your message",
         required: true,
       }),
-      // new TextWidget({
-      //   text: "<p>By submitting, you agree to the terms and conditions of our privacy policy.</p>",
-      // }),
     ],
     singleSubmitButtonAlignment: "text-center",
     steps: [
