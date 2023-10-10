@@ -18,7 +18,7 @@ module.exports = (_env, argv) => {
     new CopyWebpackPlugin([
       { from: "../LICENSE", to: BUILD_PATH },
       { from: "../package.json", to: BUILD_PATH },
-      { from: "../readme.mdown", to: BUILD_PATH },
+      { from: "../readme.md", to: BUILD_PATH },
       { from: "**/*.css", to: BUILD_PATH },
     ]),
     new MiniCssExtractPlugin({

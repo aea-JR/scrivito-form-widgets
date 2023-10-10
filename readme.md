@@ -40,7 +40,7 @@ import "scrivito-form-widgets/index.css";
 @import "~scrivito-form-widgets/index.css";
 ```
 
-Delete all form widgets contained in the "Widgets" folder:
+Delete all form widgets included in the Example App from the "Widgets" folder:
 - FormButtonWidget
 - FormCheckboxWidget
 - FormContainerWidget
