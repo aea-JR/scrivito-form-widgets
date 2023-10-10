@@ -13,6 +13,8 @@ A set of Scrivito Widgets for building awesome forms
 
 ## Installation
 
+You need to remove any previous exisiting forms and rebuild them after the installation. Copy the form ID's found in the FORM SUBMISSIONS tab inside the form properties before removing the forms.
+
 Install the package in your scrivito app:
 
 ```shell
