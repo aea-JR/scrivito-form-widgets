@@ -15,12 +15,14 @@ const DEPENDENCIES = packageJson.dependencies || {};
 module.exports = (_env, argv) => {
 
   const plugins = [
-    new CopyWebpackPlugin([
+    new CopyWebpackPlugin({
+      patterns: [
       { from: "../LICENSE", to: BUILD_PATH },
       { from: "../package.json", to: BUILD_PATH },
       { from: "../readme.md", to: BUILD_PATH },
-      { from: "**/*.css", to: BUILD_PATH },
-    ]),
+      { from: "../src/index.d.ts", to: BUILD_PATH },
+    ]
+  }),
     new MiniCssExtractPlugin({
       filename: "index.css",
     }),
@@ -31,7 +33,7 @@ module.exports = (_env, argv) => {
 
   return {
     context: SRC_PATH,
-    entry: { index: "./index.js" },
+    entry: { index: "./index.ts" },
     output: {
       path: BUILD_PATH,
       library: "scrivito-form-widgets",
@@ -46,6 +48,16 @@ module.exports = (_env, argv) => {
 
     module: {
       rules: [
+        {
+          test: /\.(ts|tsx)$/,
+          include: [SRC_PATH],
+          use: [
+            {
+              loader: "ts-loader",
+            },
+          ],
+          exclude: /node_modules/,
+        },
         {
           test: /\.js$/,
           include: [SRC_PATH],
@@ -87,6 +99,9 @@ module.exports = (_env, argv) => {
           ]
         }
       ],
+    },
+    resolve: {
+      extensions: [".ts", ".tsx",".js",".jsx"],
     },
   };
 };
