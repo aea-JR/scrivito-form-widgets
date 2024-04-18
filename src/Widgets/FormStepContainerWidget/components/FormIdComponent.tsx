@@ -11,14 +11,14 @@ export const FormIdComponent: React.FC<FormIdComponentProps> = Scrivito.connect(
   ({ widget }) => {
     const formSubmissionsHref = widget.get("formId")
       ? `https://edit.neoletter.com/i/${getInstanceId()}/forms/${widget.get(
-          "formId"
-        )}`
+        "formId"
+      )}`
       : null;
     const uiContext = Scrivito.uiContext();
     if (!uiContext) return null;
 
     return (
-      <div className={`scrivito_${uiContext.theme}`}>
+      <div className={`neoletter-form-id-tab-container scrivito_${uiContext.theme}`}>
         <div className="scrivito_detail_content">
           <div className="attribute_form_id_item">
             <ContentProperty
@@ -29,9 +29,8 @@ export const FormIdComponent: React.FC<FormIdComponentProps> = Scrivito.connect(
             />
 
             <a
-              className={`scrivito_button ${
-                formSubmissionsHref ? "scrivito_blue" : "scrivito_disabled"
-              }`}
+              className={`scrivito_button ${formSubmissionsHref ? "scrivito_blue" : "scrivito_disabled"
+                }`}
               href={formSubmissionsHref ? formSubmissionsHref : ""}
               target="_blank"
               rel="noreferrer">
@@ -43,3 +42,5 @@ export const FormIdComponent: React.FC<FormIdComponentProps> = Scrivito.connect(
     );
   }
 );
+
+Scrivito.registerComponent("FormIdComponent", FormIdComponent);

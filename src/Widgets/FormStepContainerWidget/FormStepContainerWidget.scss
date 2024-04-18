@@ -1,5 +1,6 @@
 // Styles for FormContainerWidget
 .scrivito-neoletter-form-widgets.form-container-widget {
+
   .dropdown-container,
   .select-container {
     .select-title {
@@ -7,14 +8,17 @@
       align-items: baseline;
     }
   }
+
   .text-super {
     vertical-align: super;
   }
+
   .text-mandatory {
     font-weight: 700;
     color: var(--bs-danger, #f03a47); //$secondary;
     cursor: default;
   }
+
   .rating-icon.bi {
     color: grey;
   }
@@ -28,6 +32,7 @@
     width: 0;
     z-index: -1;
   }
+
   .form-buttons {
     display: flex;
     flex-direction: row;
@@ -41,6 +46,7 @@
       justify-content: center;
       align-items: center;
     }
+
     .review-button {
       margin-right: 1em;
     }
@@ -49,41 +55,71 @@
   .hide {
     display: none;
   }
+
   &.form-border {
     border: black 1px dotted;
     padding: 0.5em;
   }
+
+  .captcha-container {
+    display: flex;
+
+    &.left {
+      justify-content: left;
+    }
+
+    &.center {
+      justify-content: center;
+    }
+
+    &.right {
+      justify-content: right;
+    }
+  }
+
+  .missing-site-key {
+    border: #f03a47 1px solid;
+    padding: 1em 0;
+  }
+
   // Bootstrap Icons - Sizes Add-on
   .bi {
     &.bi-1x {
       font-size: 1em;
       line-height: 1;
     }
+
     &.bi-default {
       font-size: 1.3em;
       line-height: 1;
     }
+
     &.bi-2x {
       font-size: 2em;
       line-height: 1;
     }
+
     &.bi-3x {
       font-size: 3em;
       line-height: 1;
     }
+
     &.bi-4x {
       font-size: 4em;
       line-height: 1;
     }
+
     &.bi-5x {
       font-size: 5em;
       line-height: 1;
     }
   }
+
   @keyframes rotate-icon {
     0% {
       transform: rotate(0deg);
     }
+
     100% {
       transform: rotate(360deg);
     }
@@ -101,28 +137,32 @@
 .bg-grey,
 .bg-greydark,
 .bg-greymiddle {
-  .missing-tenant,
-  .scrivito-neoletter-form-widgets.form-container-widget
-    .linear-scale-container,
+
+  .missing-id,
+  .missing-site-key,
+  .scrivito-neoletter-form-widgets.form-container-widget .linear-scale-container,
   .scrivito-neoletter-form-widgets.form-container-widget .reset-label span,
   .scrivito-neoletter-form-widgets.form-container-widget label,
   .scrivito-neoletter-form-widgets.form-container-widget .text-mandatory,
   .scrivito-neoletter-form-widgets.form-container-widget .bi,
   .scrivito-neoletter-form-widgets.form-container-widget .text-super,
   .card.card-theme .scrivito-neoletter-form-widgets.form-container-widget label,
-  .card.card-theme
-    .scrivito-neoletter-form-widgets.form-container-widget
-    .text-mandatory,
+  .card.card-theme .scrivito-neoletter-form-widgets.form-container-widget .text-mandatory,
   .card.card-theme .scrivito-neoletter-form-widgets.form-container-widget .bi {
     color: #fff;
   }
+
   // hardcoded for now
   .card .scrivito-neoletter-form-widgets.form-container-widget label {
-    color: #495054 /*$theme-grey */ !important;
+    color: #495054
+      /*$theme-grey */
+      !important;
   }
+
   .card .scrivito-neoletter-form-widgets.form-container-widget .text-mandatory {
     color: red !important;
   }
+
   .card .scrivito-neoletter-form-widgets.form-container-widget .bi {
     color: #ccc !important;
   }
@@ -156,6 +196,7 @@ body .modal-dialog .modal-content .modal-body.form-review {
       }
     }
   }
+
   .review-item-title {
     color: #9e9e9e;
     margin-bottom: 0;
@@ -170,5 +211,158 @@ body .modal-dialog .modal-content .modal-body.form-review {
     white-space: pre-wrap;
     max-width: 100vw;
     overflow-x: auto;
+  }
+}
+
+// FormIdComponent tab 
+.neoletter-form-id-tab-container {
+  .scrivito_detail_content {
+    border-top: 2px solid rgba(0, 0, 0, 0.1);
+    margin: 0;
+    padding: 15px;
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+
+    .scrivito_detail_label {
+      display: block;
+      padding: 0;
+      padding-bottom: 4px;
+      width: 100%;
+
+      span {
+        padding: 7px 3px 6px 3px;
+        color: #444;
+        display: block;
+        font-size: 13px;
+        font-weight: bold;
+        font-family: "Manrope", sans-serif;
+      }
+
+      &.scrivito_error {
+
+        i,
+        span {
+          color: #c04e4e !important;
+        }
+
+        .scrivito_icon_error {
+          float: left;
+          padding: 9px 3px;
+          font-size: 11px;
+          font-style: normal;
+          font-weight: normal;
+          line-height: 13px !important;
+          vertical-align: middle;
+          text-decoration: none;
+          position: relative;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          -o-user-select: none;
+          user-select: none;
+        }
+      }
+    }
+
+    .content_property_input {
+      margin-bottom: 5px;
+      box-shadow: 0 0 3px rgba(0, 0, 0, .2);
+      border-radius: 3px;
+      background: white;
+      color: #555;
+      display: block;
+      font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      font-style: normal;
+      margin-bottom: 5px;
+      padding: 0 8px;
+      min-height: 30px;
+      line-height: 30px;
+      word-break: break-all;
+
+      &.scrivito_error {
+        box-shadow: 0 0 0 2px #c04e4e inset;
+      }
+    }
+
+    .scrivito_validation_notice {
+      border-left-width: 7px !important;
+      padding: 5px 10px;
+      font-size: 11px;
+      min-height: 30px;
+      line-height: 19px;
+      font-weight: normal;
+      margin-bottom: 5px;
+      box-shadow: 0 0 3px rgba(0, 0, 0, .2);
+      border-radius: 3px;
+      background: rgba(255, 255, 255, .6);
+
+      &.scrivito_error {
+        border-left: 2px solid #c04e4e;
+        color: #666;
+        box-shadow: 0 0 0 2px #c04e4e inset;
+      }
+    }
+
+    .scrivito_notice_body {
+      color: #666;
+      font-weight: bold;
+      font-size: 12px;
+      padding: 0 0 10px;
+    }
+
+    .scrivito_button {
+      display: inline-block;
+      color: #555;
+      font-size: 14px;
+      font-weight: normal;
+      line-height: 14px;
+      text-align: center;
+      padding: 8px 10px;
+      margin: 0 10px 10px 0;
+      position: relative;
+      z-index: 1;
+      vertical-align: middle;
+      min-width: 90px;
+      min-height: 14px;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      background: #fcfcfc;
+      border-radius: 3px;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      -o-user-select: none;
+      user-select: none;
+      text-decoration: none;
+
+      &.scrivito_disabled {
+        color: #aaa !important;
+        cursor: not-allowed;
+        background: #eee;
+      }
+
+      &.scrivito_blue {
+        background: #426698 !important;
+        color: #fff !important;
+      }
+    }
+  }
+
+  &.scrivito_dark {
+    .scrivito_detail_label span {
+      color: #eee;
+      text-shadow: 0 1px 1px rgba(0, 0, 0, .3), 0 0 4px rgba(0, 0, 0, .2);
+    }
+
+    .content_property_input {
+      background: rgba(222, 222, 222, .2);
+      color: #eee;
+    }
+
+    .scrivito_validation_notice {
+      color: #eee !important;
+      background: rgba(222, 222, 222, 0.2);
+    }
   }
 }

@@ -4,6 +4,32 @@ export const FormStepContainerWidget = Scrivito.provideWidgetClass(
   "FormStepContainerWidget",
   {
     attributes: {
+      showCaptcha: "boolean",
+      friendlyCaptchaLanguage: "string",
+      googleRecaptchaLanguage: "string",
+      captchaAlignment: [
+        "enum",
+        {
+          values: ["left", "center", "right"]
+        }
+      ],
+      friendlyCaptchaTheme: [
+        "enum",
+        {
+          values: ["light", "dark"]
+        }
+      ],
+      googleRecaptchaTheme: [
+        "enum",
+        {
+          values: ["light", "dark"]
+        }
+      ],
+      friendlyCaptchaStartMode: ["enum",
+        {
+          values: ["none", "auto", "focus"]
+        }
+      ],
       formId: "string",
       failedMessage: "string",
       submittedMessage: "string",

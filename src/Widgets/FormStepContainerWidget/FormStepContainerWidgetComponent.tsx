@@ -12,6 +12,7 @@ import { FormSubmissionFailed } from "./components/FormSubmissionFailedComponent
 import { FormSubmissionSucceeded } from "./components/FormSubmissionSucceededComponent";
 import { FormSubmitting } from "./components/FormSubmittingComponent";
 import { FormStepContainerWidget } from "./FormStepContainerWidgetClass";
+import { FormCaptcha } from "./components/FormCaptchaComponent";
 import { InputValidationElement } from "../../../types/types";
 import "./FormStepContainerWidget.scss";
 import "bootstrap-icons/font/bootstrap-icons.scss";
@@ -26,10 +27,24 @@ Scrivito.provideComponent(FormStepContainerWidget, ({ widget }) => {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [successfullySent, setSuccessfullySent] = React.useState(false);
   const [submissionFailed, setSubmissionFailed] = React.useState(false);
+  const [reCaptchaToken, setReCaptchaToken] = React.useState<string | null>(null);
+  const [isSubmitDisabled, setIsSubmitDisabled] = React.useState(false);
   const isSingleStep = widget.get("formType") == "single-step";
   const stepsLength = widget.get("steps").length;
   const isLastPage = currentStep == stepsLength;
   const showReview = widget.get("showReview");
+  const showCaptcha = widget.get("showCaptcha");
+
+  React.useEffect(() => {
+    if (showCaptcha) {
+      if (isLastPage) {
+        setIsSubmitDisabled(reCaptchaToken == null);
+      } else if (reCaptchaToken) {
+        // reset on posssible step change
+        setReCaptchaToken(null);
+      }
+    }
+  }, [reCaptchaToken, showCaptcha, isLastPage]);
 
   React.useEffect(() => {
     if (!Scrivito.isInPlaceEditingActive()) {
@@ -73,9 +88,8 @@ Scrivito.provideComponent(FormStepContainerWidget, ({ widget }) => {
 
   return (
     <div
-      className={`scrivito-neoletter-form-widgets form-container-widget ${
-        widget.get("showBorder") ? "form-border" : ""
-      }`}>
+      className={`scrivito-neoletter-form-widgets form-container-widget ${widget.get("showBorder") ? "form-border" : ""
+        }`}>
       <form method="post" id={widget.get("formId")}>
         <FormHiddenFields widget={widget} />
         <Scrivito.ContentTag
@@ -97,9 +111,15 @@ Scrivito.provideComponent(FormStepContainerWidget, ({ widget }) => {
             }
           }}
         />
+        {(showCaptcha && (isLastPage || Scrivito.isInPlaceEditingActive())) &&
+          <FormCaptcha
+            widget={widget}
+            onChangeCaptcha={setReCaptchaToken}
+          />
+        }
       </form>
       {isSingleStep ? (
-        <FormFooterSingleStep widget={widget} onSubmit={onSubmit} />
+        <FormFooterSingleStep widget={widget} onSubmit={onSubmit} submitDisabled={isSubmitDisabled} />
       ) : (
         <FormFooterMultiSteps
           widget={widget}
@@ -109,6 +129,7 @@ Scrivito.provideComponent(FormStepContainerWidget, ({ widget }) => {
           stepsLength={stepsLength}
           isLastPage={isLastPage}
           showReview={showReview}
+          submitDisabled={isSubmitDisabled}
         />
       )}
     </div>

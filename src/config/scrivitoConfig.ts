@@ -1,15 +1,28 @@
+import * as Scrivito from "scrivito"
 import { isEmpty } from "lodash-es";
+import { CaptchaOptions } from "../../types/types";
 
 let _instanceId: string = "";
 
-export const initNeoletterFormWidgets = (instanceId: string): void => {
-  _instanceId = instanceId;
+let _captchaOptions: CaptchaOptions = {
+  siteKey: "",
+  captchaType: null
+}
+
+export const initNeoletterFormWidgets = (instanceId?: string, captchaOptions?: CaptchaOptions): void => {
+  // too early to call Scrivito.getInstanceId() here
+  instanceId && (_instanceId = instanceId);
+  captchaOptions && (_captchaOptions = captchaOptions);
   loadWidgets();
 };
 
 export const getInstanceId = (): string => {
-  return _instanceId;
+  return _instanceId || Scrivito.getInstanceId();
 };
+
+export const getCaptchaOptions = (): CaptchaOptions => {
+  return _captchaOptions;
+}
 
 function loadWidgets(): void {
   if (isEmpty(import.meta)) {
