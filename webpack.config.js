@@ -1,5 +1,4 @@
-/* eslint-disable import/no-nodejs-modules */
-/* eslint-disable import/no-commonjs */
+/* eslint-disable @typescript-eslint/no-var-requires */
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -13,19 +12,18 @@ const BUILD_PATH = path.resolve(__dirname, "build");
 const PEER_DEPENDENCIES = packageJson.peerDependencies;
 const DEPENDENCIES = packageJson.dependencies || {};
 module.exports = (_env, argv) => {
-
   const plugins = [
     new CopyWebpackPlugin({
       patterns: [
-      { from: "../LICENSE", to: BUILD_PATH },
-      { from: "../package.json", to: BUILD_PATH },
-      { from: "../readme.md", to: BUILD_PATH },
-      { from: "../src/index.d.ts", to: BUILD_PATH },
-    ]
-  }),
-    new MiniCssExtractPlugin({
-      filename: "index.css",
+        { from: "../LICENSE", to: BUILD_PATH },
+        { from: "../package.json", to: BUILD_PATH },
+        { from: "../readme.md", to: BUILD_PATH },
+        { from: "../src/index.d.ts", to: BUILD_PATH }
+      ]
     }),
+    new MiniCssExtractPlugin({
+      filename: "index.css"
+    })
   ];
   if (argv.mode === "production") {
     plugins.unshift(new CleanWebpackPlugin());
@@ -38,11 +36,11 @@ module.exports = (_env, argv) => {
       path: BUILD_PATH,
       library: "scrivito-form-widgets",
       libraryTarget: "umd",
-      chunkLoading: false,
+      chunkLoading: false
     },
     externals: [
       ...Object.keys(DEPENDENCIES),
-      ...Object.keys(PEER_DEPENDENCIES),
+      ...Object.keys(PEER_DEPENDENCIES)
     ],
     plugins,
 
@@ -53,10 +51,10 @@ module.exports = (_env, argv) => {
           include: [SRC_PATH],
           use: [
             {
-              loader: "ts-loader",
-            },
+              loader: "ts-loader"
+            }
           ],
-          exclude: /node_modules/,
+          exclude: /node_modules/
         },
         {
           test: /\.js$/,
@@ -73,35 +71,33 @@ module.exports = (_env, argv) => {
                       debug: false,
                       modules: false,
                       shippedProposals: false,
-                      useBuiltIns: false,
-                    },
-                  ],
+                      useBuiltIns: false
+                    }
+                  ]
                 ],
-                cacheDirectory: "tmp/babel-cache",
-              },
-            },
-
-          ],
+                cacheDirectory: "tmp/babel-cache"
+              }
+            }
+          ]
         },
         {
           test: /\.(svg|gif)$/,
-          use: ["url-loader"],
+          use: ["url-loader"]
         },
         {
           test: /\.scss$/,
           use: [
             argv.mode === "production"
               ? MiniCssExtractPlugin.loader
-              :
-              "style-loader",
+              : "style-loader",
             "css-loader",
             "sass-loader"
           ]
         }
-      ],
+      ]
     },
     resolve: {
-      extensions: [".ts", ".tsx",".js",".jsx"],
-    },
+      extensions: [".ts", ".tsx", ".js", ".jsx"]
+    }
   };
 };
