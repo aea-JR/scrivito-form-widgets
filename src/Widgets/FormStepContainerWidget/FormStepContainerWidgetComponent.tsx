@@ -11,6 +11,7 @@ import { FormNoTenant } from "./components/FormNoTenantComponent";
 import { FormSubmissionFailed } from "./components/FormSubmissionFailedComponent";
 import { FormSubmissionSucceeded } from "./components/FormSubmissionSucceededComponent";
 import { FormSubmitting } from "./components/FormSubmittingComponent";
+import { FormCaptcha } from "./components/FormCaptchaComponent";
 import { FormStepContainerWidget } from "./FormStepContainerWidgetClass";
 import { InputValidationElement } from "../../../types/types";
 import "./FormStepContainerWidget.scss";
@@ -114,6 +115,9 @@ Scrivito.provideComponent(FormStepContainerWidget, ({ widget }) => {
             }
           }}
         />
+        {showCaptcha && (isLastPage || Scrivito.isInPlaceEditingActive()) && (
+          <FormCaptcha widget={widget} onChangeCaptcha={setReCaptchaToken} />
+        )}
       </form>
       {isSingleStep ? (
         <FormFooterSingleStep
