@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as Scrivito from "scrivito";
-import { isEmpty } from "lodash";
+import isEmpty from "lodash-es/isEmpty";
 import { AllIcons } from "./AllIcons";
 import { IconSearch } from "./IconSearch";
 import { IconSearchResults } from "./IconSearchResults";
@@ -30,14 +30,15 @@ export const IconEditorTab: React.FC<IconEditorTabProps> = ({ widget }) => {
               className={`bi ${currentIcon}`}
               style={{
                 color: color
-              }}></i>
+              }}
+            ></i>
           </div>
 
           {Scrivito.canWrite() && (
             <>
               <IconSearch
                 searchValue={searchValue}
-                setSearchValue={newSearchValue => {
+                setSearchValue={(newSearchValue) => {
                   if (searchValue !== newSearchValue) {
                     setSearchValue(newSearchValue);
                   }
