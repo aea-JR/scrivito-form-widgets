@@ -2,7 +2,6 @@
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-
 const path = require("path");
 const packageJson = require("./package.json");
 
@@ -18,11 +17,13 @@ module.exports = (_env, argv) => {
         { from: "../LICENSE", to: BUILD_PATH },
         { from: "../package.json", to: BUILD_PATH },
         { from: "../readme.md", to: BUILD_PATH },
-        { from: "../src/index.d.ts", to: BUILD_PATH }
+        { from: "../src/index.d.ts", to: BUILD_PATH },
+        { from: "../src/editing.d.ts", to: BUILD_PATH },
+        { from: "../src/validations.d.ts", to: BUILD_PATH }
       ]
     }),
     new MiniCssExtractPlugin({
-      filename: "index.css"
+      filename: "[name].css"
     })
   ];
   if (argv.mode === "production") {
@@ -31,7 +32,11 @@ module.exports = (_env, argv) => {
 
   return {
     context: SRC_PATH,
-    entry: { index: "./index.ts" },
+    entry: {
+      index: "./index.ts",
+      editing: "./editing.ts",
+      validations: "./validations.ts"
+    },
     output: {
       path: BUILD_PATH,
       library: "scrivito-form-widgets",
