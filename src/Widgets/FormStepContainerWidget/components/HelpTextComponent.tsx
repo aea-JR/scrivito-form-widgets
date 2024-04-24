@@ -1,6 +1,5 @@
 import * as React from "react";
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import Popover from "react-bootstrap/Popover";
+import { OverlayTrigger, Popover } from "react-bootstrap";
 import * as Scrivito from "scrivito";
 interface HelpTextProps {
   widget: Scrivito.Widget;

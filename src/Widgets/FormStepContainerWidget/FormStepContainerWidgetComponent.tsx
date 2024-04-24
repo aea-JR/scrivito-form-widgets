@@ -1,6 +1,5 @@
 import * as React from "react";
 import * as Scrivito from "scrivito";
-import isEmpty from "lodash-es/isEmpty";
 import { scrollIntoView } from "./utils/scrollIntoView";
 import { FormFooterMultiSteps } from "./components/FormFooterMultiStepsComponent";
 import { FormFooterSingleStep } from "./components/FormFooterSingleStepComponent";
@@ -16,6 +15,7 @@ import { FormStepContainerWidget } from "./FormStepContainerWidgetClass";
 import { InputValidationElement } from "../../../types/types";
 import "./FormStepContainerWidget.scss";
 import "bootstrap-icons/font/bootstrap-icons.scss";
+import { isEmpty } from "./utils/lodashPolyfills";
 
 Scrivito.provideComponent(FormStepContainerWidget, ({ widget }) => {
   const tenant = getInstanceId();
