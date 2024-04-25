@@ -1,6 +1,6 @@
 {
   "name": "my-test-form-widgets",
-  "version": "0.0.157",
+  "version": "0.0.169",
   "description": "A set of Scrivito Neoletter Form Widgets",
   "main": "index.js",
   "scripts": {
@@ -30,7 +30,6 @@
     "fuse.js": "^6.6.2",
     "history": "^5.3.0",
     "react": "^18.0.0",
-    "react-bootstrap": "^2.5.0",
     "react-dom": "^18.0.0",
     "scrivito": "*"
   },
