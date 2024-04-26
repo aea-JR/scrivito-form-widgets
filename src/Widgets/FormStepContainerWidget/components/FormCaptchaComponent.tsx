@@ -6,15 +6,18 @@ import { GoogleReCaptcha } from "./GoogleReCaptchaComponent";
 import { isEmpty } from "../utils/lodashPolyfills";
 interface FormCaptchaProps {
   widget: Scrivito.Widget;
+  alignment: string;
+  hidden: boolean;
   onChangeCaptcha: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 export const FormCaptcha: React.FC<FormCaptchaProps> = ({
   onChangeCaptcha,
-  widget
+  widget,
+  alignment,
+  hidden
 }) => {
   const options = getCaptchaOptions();
-  const alignment = widget.get("captchaAlignment") || "center";
   if (Scrivito.isInPlaceEditingActive() && isEmpty(options.siteKey)) {
     return (
       <div className="text-center missing-site-key">
@@ -27,7 +30,7 @@ export const FormCaptcha: React.FC<FormCaptchaProps> = ({
   }
 
   return (
-    <div className={`mb-3 captcha-container ${alignment}`}>
+    <div hidden={hidden} className={`mb-3 captcha-container ${alignment}`}>
       {options.captchaType == "google-recaptcha" ? (
         <GoogleReCaptcha
           onChangeCaptcha={onChangeCaptcha}

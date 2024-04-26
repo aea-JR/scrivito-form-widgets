@@ -2,6 +2,7 @@
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const path = require("path");
 const packageJson = require("./package.json");
 
@@ -28,6 +29,14 @@ module.exports = (_env, argv) => {
   ];
   if (argv.mode === "production") {
     plugins.unshift(new CleanWebpackPlugin());
+  } else {
+    plugins.push(
+      new BundleAnalyzerPlugin({
+        analyzerMode: "disabled",
+        generateStatsFile: true,
+        statsFilename: "stats.json"
+      })
+    );
   }
 
   return {
