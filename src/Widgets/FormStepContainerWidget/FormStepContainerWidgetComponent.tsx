@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as Scrivito from "scrivito";
+import { isEmpty } from "./utils/lodashPolyfills";
 import { scrollIntoView } from "./utils/scrollIntoView";
 import { FormFooterMultiSteps } from "./components/FormFooterMultiStepsComponent";
 import { FormFooterSingleStep } from "./components/FormFooterSingleStepComponent";
@@ -10,12 +11,11 @@ import { FormNoTenant } from "./components/FormNoTenantComponent";
 import { FormSubmissionFailed } from "./components/FormSubmissionFailedComponent";
 import { FormSubmissionSucceeded } from "./components/FormSubmissionSucceededComponent";
 import { FormSubmitting } from "./components/FormSubmittingComponent";
-import { FormCaptcha } from "./components/FormCaptchaComponent";
 import { FormStepContainerWidget } from "./FormStepContainerWidgetClass";
+import { FormCaptcha } from "./components/FormCaptchaComponent";
 import { InputValidationElement } from "../../../types/types";
 import "./FormStepContainerWidget.scss";
 import "bootstrap-icons/font/bootstrap-icons.scss";
-import { isEmpty } from "./utils/lodashPolyfills";
 
 Scrivito.provideComponent(FormStepContainerWidget, ({ widget }) => {
   const tenant = getInstanceId();

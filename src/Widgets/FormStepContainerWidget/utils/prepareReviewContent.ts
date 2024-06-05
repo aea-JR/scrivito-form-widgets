@@ -1,7 +1,7 @@
 import { Widget } from "scrivito";
+import { isEmpty, uniq } from "./lodashPolyfills";
 import { getFieldName } from "./getFieldName";
 import { InputValidationElement, ReviewContent } from "../../../../types/types";
-import { isEmpty, uniq } from "./lodashPolyfills";
 
 export function prepareReviewContent(widget: Widget): ReviewContent {
   const form = document.getElementById(

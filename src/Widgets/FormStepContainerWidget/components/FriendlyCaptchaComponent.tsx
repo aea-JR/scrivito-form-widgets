@@ -21,7 +21,6 @@ export const FriendlyCaptcha: React.FC<FriendlyCaptchaProps> = ({
   widget,
   endpoint
 }) => {
-  const container = React.useRef<HTMLDivElement>(null);
   const theme = (widget.get("friendlyCaptchaTheme") as string) || "light";
   const startMode =
     (widget.get("friendlyCaptchaStartMode") as FriendlyCaptchaStartMode) ||
@@ -61,7 +60,6 @@ export const FriendlyCaptcha: React.FC<FriendlyCaptchaProps> = ({
 
   return (
     <div
-      ref={container}
       data-start={startMode}
       data-lang={language}
       data-sitekey={siteKey}

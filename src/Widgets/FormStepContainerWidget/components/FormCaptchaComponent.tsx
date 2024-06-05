@@ -1,9 +1,9 @@
 import * as React from "react";
 import * as Scrivito from "scrivito";
+import { isEmpty } from "../utils/lodashPolyfills";
 import { getCaptchaOptions } from "../../../config/scrivitoConfig";
 import { FriendlyCaptcha } from "./FriendlyCaptchaComponent";
 import { GoogleReCaptcha } from "./GoogleReCaptchaComponent";
-import { isEmpty } from "../utils/lodashPolyfills";
 interface FormCaptchaProps {
   widget: Scrivito.Widget;
   alignment: string;

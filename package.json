@@ -1,12 +1,11 @@
 {
   "name": "my-test-form-widgets",
-  "version": "0.0.184",
+  "version": "0.0.190",
   "description": "A set of Scrivito Neoletter Form Widgets",
   "main": "index.js",
   "scripts": {
     "build": "webpack --mode production",
     "start": "webpack --watch --mode development",
-    "analyze": "webpack-bundle-analyzer build/stats.json",
     "link": "cd build && npm link",
     "link:vite-project": "npm link",
     "publish:build": "npm run build && cd build && npm publish",
@@ -78,7 +77,6 @@
     "typescript": "^5.3.3",
     "url-loader": "^3.0.0",
     "webpack": "^5.76.0",
-    "webpack-bundle-analyzer": "^4.10.2",
     "webpack-cli": "^4.10.0"
   },
   "author": "",

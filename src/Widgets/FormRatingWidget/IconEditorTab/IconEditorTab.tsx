@@ -1,11 +1,11 @@
 import * as React from "react";
 import * as Scrivito from "scrivito";
+import { isEmpty } from "../../FormStepContainerWidget/utils/lodashPolyfills";
 import { AllIcons } from "./AllIcons";
 import { IconSearch } from "./IconSearch";
 import { IconSearchResults } from "./IconSearchResults";
 import { getIconColor } from "../../FormStepContainerWidget/utils/getIconColor";
 import "./IconEditorTab.scss";
-import { isEmpty } from "../../FormStepContainerWidget/utils/lodashPolyfills";
 
 interface IconEditorTabProps {
   widget: Scrivito.Widget;

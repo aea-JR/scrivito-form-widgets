@@ -3,14 +3,16 @@ import * as Scrivito from "scrivito";
 import { CaptchaOptions } from "../../types/types";
 import { isEmpty } from "../Widgets/FormStepContainerWidget/utils/lodashPolyfills";
 
+const GLOBAL_OBJ = typeof window !== 'undefined' ? window : global;
+
 export const initNeoletterFormWidgets = (
   instanceId?: string,
   captchaOptions?: CaptchaOptions
 ): void => {
-  // too early to call Scrivito.getInstanceId() here
-  // attach to window in order to read them in editingConfig.
-  instanceId && ((window as any).instanceId = instanceId);
-  (window as any).captchaOptions = captchaOptions
+  if (instanceId) {
+    (GLOBAL_OBJ as any).neoletterFormInstanceId = instanceId;
+  }
+  (GLOBAL_OBJ as any).neoletterFormCaptchaOptions = captchaOptions
     ? captchaOptions
     : { siteKey: "", captchaType: null };
 
@@ -19,14 +21,14 @@ export const initNeoletterFormWidgets = (
 
 export const getInstanceId = (): string => {
   return (
-    (window as any).instanceId ||
+    (GLOBAL_OBJ as any).neoletterFormInstanceId ||
     (Scrivito.getInstanceId && Scrivito.getInstanceId()) ||
     ""
   );
 };
 
 export const getCaptchaOptions = (): CaptchaOptions => {
-  return (window as any).captchaOptions;
+  return (GLOBAL_OBJ as any).neoletterFormCaptchaOptions;
 };
 
 function loadWidgets(): void {

@@ -2,7 +2,7 @@
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
+
 const path = require("path");
 const packageJson = require("./package.json");
 
@@ -11,6 +11,7 @@ const BUILD_PATH = path.resolve(__dirname, "build");
 
 const PEER_DEPENDENCIES = packageJson.peerDependencies;
 const DEPENDENCIES = packageJson.dependencies || {};
+
 module.exports = (_env, argv) => {
   const plugins = [
     new CopyWebpackPlugin({
@@ -27,16 +28,9 @@ module.exports = (_env, argv) => {
       filename: "[name].css"
     })
   ];
+
   if (argv.mode === "production") {
     plugins.unshift(new CleanWebpackPlugin());
-  } else {
-    plugins.push(
-      new BundleAnalyzerPlugin({
-        analyzerMode: "disabled",
-        generateStatsFile: true,
-        statsFilename: "stats.json"
-      })
-    );
   }
 
   return {
@@ -50,8 +44,10 @@ module.exports = (_env, argv) => {
       path: BUILD_PATH,
       library: "scrivito-form-widgets",
       libraryTarget: "umd",
-      chunkLoading: false
+      chunkLoading: false,
+      globalObject: "this"
     },
+    target: "web",
     externals: [
       ...Object.keys(DEPENDENCIES),
       ...Object.keys(PEER_DEPENDENCIES)

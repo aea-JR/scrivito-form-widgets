@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as Scrivito from "scrivito";
+
 import { getFieldName } from "../FormStepContainerWidget/utils/getFieldName";
 import { FormHiddenFieldWidget } from "./FormHiddenFieldWidgetClass";
 import { isEmpty } from "../FormStepContainerWidget/utils/lodashPolyfills";

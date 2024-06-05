@@ -1,5 +1,7 @@
 import * as React from "react";
 import * as Scrivito from "scrivito";
+import { isEmpty } from "../FormStepContainerWidget/utils/lodashPolyfills";
+
 import { scrollIntoView } from "../FormStepContainerWidget/utils/scrollIntoView";
 import { getInstanceId } from "../../config/scrivitoConfig";
 import { submitForm } from "../FormStepContainerWidget/utils/submitForm";
@@ -10,7 +12,6 @@ import { FormSubmissionFailed } from "../FormStepContainerWidget/components/Form
 import { FormSubmissionSucceeded } from "../FormStepContainerWidget/components/FormSubmissionSucceededComponent";
 import { FormContainerWidget } from "./FormContainerWidgetClass";
 import "../FormStepContainerWidget/FormStepContainerWidget.scss";
-import { isEmpty } from "../FormStepContainerWidget/utils/lodashPolyfills";
 
 Scrivito.provideComponent(FormContainerWidget, ({ widget }) => {
   const tenant = getInstanceId();
