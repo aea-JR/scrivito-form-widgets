@@ -1,7 +1,7 @@
 {
   "name": "my-test-form-widgets",
-  "version": "0.0.190",
-  "description": "A set of Scrivito Neoletter Form Widgets",
+  "version": "0.0.228",
+  "description": "Testing package for Scrivito Neoletter Form Widgets DO NOT USE!",
   "main": "index.js",
   "scripts": {
     "build": "webpack --mode production",
@@ -13,14 +13,6 @@
     "lint:fix": "eslint --fix .",
     "test": "jest"
   },
-  "keywords": [
-    "Scrivito",
-    "widgets",
-    "react",
-    "form",
-    "questionnaire",
-    "neoletter"
-  ],
   "peerDependencies": {
     "bootstrap-icons": "^1.11.2",
     "fuse.js": "^6.6.2",
