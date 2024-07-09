@@ -13,7 +13,7 @@ import { FormSubmissionSucceeded } from "./components/FormSubmissionSucceededCom
 import { FormSubmitting } from "./components/FormSubmittingComponent";
 import { FormStepContainerWidget } from "./FormStepContainerWidgetClass";
 import { FormCaptcha } from "./components/FormCaptchaComponent";
-import { InputValidationElement } from "../../../types/types";
+import { CaptchaTheme, InputValidationElement } from "../../../types/types";
 import "./FormStepContainerWidget.scss";
 import "bootstrap-icons/font/bootstrap-icons.scss";
 
@@ -113,7 +113,7 @@ Scrivito.provideComponent(FormStepContainerWidget, ({ widget }) => {
           <FormCaptcha
             widget={widget}
             alignment={widget.get("captchaAlignment") || "center"}
-            theme={widget.get("captchaTheme") || "light"}
+            theme={(widget.get("captchaTheme") || "light") as CaptchaTheme}
             hidden={!(isLastPage || Scrivito.isInPlaceEditingActive())}
             onChangeCaptcha={setReCaptchaToken}
           />
