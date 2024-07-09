@@ -85,9 +85,8 @@ Scrivito.provideComponent(FormStepContainerWidget, ({ widget }) => {
 
   return (
     <div
-      className={`scrivito-neoletter-form-widgets form-container-widget ${
-        widget.get("showBorder") ? "form-border" : ""
-      }`}
+      className={`scrivito-neoletter-form-widgets form-container-widget ${widget.get("showBorder") ? "form-border" : ""
+        }`}
     >
       <form method="post" id={widget.get("formId")}>
         <FormHiddenFields widget={widget} />
@@ -114,6 +113,7 @@ Scrivito.provideComponent(FormStepContainerWidget, ({ widget }) => {
           <FormCaptcha
             widget={widget}
             alignment={widget.get("captchaAlignment") || "center"}
+            theme={widget.get("captchaTheme") || "light"}
             hidden={!(isLastPage || Scrivito.isInPlaceEditingActive())}
             onChangeCaptcha={setReCaptchaToken}
           />
