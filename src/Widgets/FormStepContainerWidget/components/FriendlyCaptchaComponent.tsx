@@ -6,7 +6,7 @@ import {
 	FriendlyCaptchaStartMode
 } from "../../../../types/types";
 import { isEmpty } from "../utils/lodashPolyfills";
-import { WidgetInstance } from "../../../../types/friendlyChallenge";
+import { localizations, WidgetInstance } from "../../../../types/friendlyChallenge";
 
 interface FriendlyCaptchaProps {
 	onChangeCaptcha: React.Dispatch<React.SetStateAction<string | null>>;
@@ -37,13 +37,13 @@ export const FriendlyCaptcha: React.FC<FriendlyCaptchaProps> = ({
 
 	React.useLayoutEffect(() => {
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		if (!widgetInstance.current && container.current && (window as any).friendlyChallenge) {
+		if (!widgetInstance.current && container.current && window.friendlyChallenge) {
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			widgetInstance.current = new (window as any).friendlyChallenge.WidgetInstance(container.current, {
+			widgetInstance.current = new window.friendlyChallenge.WidgetInstance(container.current, {
 				startMode: startMode,
 				doneCallback: onChangeCaptcha,
 				sitekey: siteKey,
-				language: language,
+				language: language as keyof typeof localizations,
 
 				puzzleEndpoint: endpoint == "eu" ? EU_ENDPOINT : GLOBAL_ENDPOINT
 			});
