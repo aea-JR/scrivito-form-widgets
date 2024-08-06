@@ -40,7 +40,7 @@ import { initNeoletterFormWidgets } from "scrivito-neoletter-form-widgets";
 initNeoletterFormWidgets();
 
 // If using Scrivito version prior to 1.39.0
-// initNeoletterFormWidgets(process.env.SCRIVITO_TENANT);
+// initNeoletterFormWidgets({ instanceId: process.env.SCRIVITO_TENANT });
 ```
 
 Import the `loadEditingConfigs` function from the package and call it in your editingConfigs.js file also found in the Widgets folder.
@@ -79,6 +79,16 @@ Delete all form widgets included in the Example App from the "Widgets" folder:
 - FormInputFieldWidget
 
 You're done! Enjoy building well-designed and cleverly arranged forms!
+
+## Prerendering with Vite
+
+When using prerender in a Vite environment, you need to add `--options.deps.external='/scrivito/'` to the script in order to create static HTML files correctly. Example:
+
+```json
+"prerender": "npm run build && vite-node --options.deps.external='/scrivito/' src/prerender_content.js"
+```
+
+**Note:** Prerender does not work when using captchas. This is because both captchas make use of the `window` object in their scripts, and the `window` object is not available when running `vite-node`.
 
 # Neoletter Form Widgets Overview
 
@@ -142,7 +152,7 @@ The `Form` widget has the following properties divided into several tabs:
 - "Hidden fields" tab
   - Hidden Fields: Customize hidden fields.
 - "Form submission" tab
-  - Form ID: This ID identifies the form in Neoletter.
+  - Form ID: This ID identifies the form in Neoletter. The input field includes icons to generate a new ID and to restore the initial ID that was stored before opening the properties.
 - "Navigation area" tab (Content depends on form type i.e. single-step or multiple-steps)
   - Forward button text: Text for the forward button.
   - Backward button text: Text for the backward button.
@@ -456,7 +466,7 @@ import * as Scrivito from "scrivito";
 import {
   customFieldNameValidation,
   insideFormContainerValidation
-} from "scrivito-neoletter-form-widgets";
+} from "scrivito-neoletter-form-widgets/validations";
 
 Scrivito.provideEditingConfig("FormSliderWidget", {
   title: "Form Slider",
@@ -498,9 +508,12 @@ You can only use one of them for your site, but you can change it later if neede
 
 ```js
 import { initNeoletterFormWidgets } from "scrivito-neoletter-form-widgets";
-initNeoletterFormWidgets(process.env.SCRIVITO_TENANT, {
-  siteKey: "your_site_key",
-  captchaType: "google-recaptcha"
+initNeoletterFormWidgets({
+  instanceId: process.env.SCRIVITO_TENANT,
+  captchaOptions: {
+    siteKey: "your_site_key",
+    captchaType: "google-recaptcha"
+  }
 });
 ```
 
@@ -508,9 +521,11 @@ initNeoletterFormWidgets(process.env.SCRIVITO_TENANT, {
 
 ```js
 import { initNeoletterFormWidgets } from "scrivito-neoletter-form-widgets";
-initNeoletterFormWidgets(null, {
-  siteKey: "your_site_key",
-  captchaType: "google-recaptcha"
+initNeoletterFormWidgets({
+  captchaOptions: {
+    siteKey: "your_site_key",
+    captchaType: "google-recaptcha"
+  }
 });
 ```
 
@@ -530,9 +545,12 @@ Finally you need to setup the secret key in Neoletter to be able to use Google r
 
 ```js
 import { initNeoletterFormWidgets } from "scrivito-neoletter-form-widgets";
-initNeoletterFormWidgets(process.env.SCRIVITO_TENANT, {
-  siteKey: "your_site_key",
-  captchaType: "friendly-captcha"
+initNeoletterFormWidgets({
+  instanceId: process.env.SCRIVITO_TENANT,
+  captchaOptions: {
+    siteKey: "your_site_key",
+    captchaType: "friendly-captcha"
+  }
 });
 ```
 
@@ -540,9 +558,11 @@ initNeoletterFormWidgets(process.env.SCRIVITO_TENANT, {
 
 ```js
 import { initNeoletterFormWidgets } from "scrivito-neoletter-form-widgets";
-initNeoletterFormWidgets(null, {
-  siteKey: "your_site_key",
-  captchaType: "friendly-captcha"
+initNeoletterFormWidgets({
+  captchaOptions: {
+    siteKey: "your_site_key",
+    captchaType: "friendly-captcha"
+  }
 });
 ```
 
@@ -574,6 +594,17 @@ For the Friendly Captcha, you need to add the following URLs to the "script-src"
 ```
 
 For more information regarding CSP, please refer to the CSP section in the Friendly Captcha Docs found [here](https://docs.friendlycaptcha.com/#/csp) or in the Google reCAPTCHA FAQ found [here](https://developers.google.com/recaptcha/docs/faq?hl=de#im-using-content-security-policy-csp-on-my-website.-how-can-i-configure-it-to-work-with-recaptcha)
+
+# Tracking
+
+Enable the Beta Neoletter Tracking capabilities with: 
+
+```js
+import { initNeoletterFormWidgets } from "scrivito-neoletter-form-widgets";
+initNeoletterFormWidgets({
+  tracking: true
+});
+```
 
 # Local Development
 
@@ -614,7 +645,7 @@ Below this import, call the `initNeoletterFormWidgets` function:
 - Using Scrivito version prior to 1.39.0:
 
 ```js
-initNeoletterFormWidgets(process.env.SCRIVITO_TENANT);
+initNeoletterFormWidgets({ instanceId: process.env.SCRIVITO_TENANT });
 ```
 
 - Using Scrivito version 1.39.0 or later:
@@ -674,7 +705,7 @@ Below this import, call the `initNeoletterFormWidgets` function:
 - Using Scrivito version prior to 1.39.0:
 
 ```js
-initNeoletterFormWidgets(process.env.SCRIVITO_TENANT);
+initNeoletterFormWidgets({ instanceId: process.env.SCRIVITO_TENANT });
 ```
 
 - Using Scrivito version 1.39.0 or later:

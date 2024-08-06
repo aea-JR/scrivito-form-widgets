@@ -21,7 +21,7 @@ export const Review: React.FC<ReviewProps> = ({
 
   React.useEffect(() => {
     setShow(true);
-    // Save the current overflow value
+    // save the current overflow value
     previousOverflowRef.current = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
