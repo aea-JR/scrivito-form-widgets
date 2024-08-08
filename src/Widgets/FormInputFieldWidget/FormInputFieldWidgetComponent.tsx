@@ -5,21 +5,26 @@ import { isCustomType } from "../FormStepContainerWidget/utils/isCustomType";
 import { Mandatory } from "../FormStepContainerWidget/components/MandatoryComponent";
 import { HelpText } from "../FormStepContainerWidget/components/HelpTextComponent";
 import { FormInputFieldWidget } from "./FormInputFieldWidgetClass";
+import { isEmpty } from "../FormStepContainerWidget/utils/lodashPolyfills";
 Scrivito.provideComponent(FormInputFieldWidget, ({ widget }) => {
   const id = `form_text_input_widget_${widget.id()}`;
   const fieldName = getFieldName(widget);
 
   return (
     <div className="mb-3">
-      <Scrivito.ContentTag
-        content={widget}
-        attribute="label"
-        tag="label"
-        htmlFor={id}
-      />
-      {widget.get("required") && <Mandatory />}
-
-      {widget.get("helpText") && <HelpText widget={widget} />}
+      {!isEmpty(widget.get("label")) && (
+        <>
+          <Scrivito.ContentTag
+            content={widget}
+            attribute="label"
+            tag="label"
+            htmlFor={id}
+          />
+          {widget.get("required") && <Mandatory />}
+          {widget.get("helpText") && <HelpText widget={widget} />}
+        </>
+      )
+      }
 
       {isCustomType(widget) && widget.get("customType") === "multi_line" ? (
         <textarea

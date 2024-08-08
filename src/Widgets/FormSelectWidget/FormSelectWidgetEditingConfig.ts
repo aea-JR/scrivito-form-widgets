@@ -31,10 +31,12 @@ Scrivito.provideEditingConfig("FormSelectWidget", {
     inlineView: {
       title: "Arrange items horizontally",
       description: "When enabled, all items will be displayed in a single row."
-    }
+    },
+    navigateOnClick: { title: "Navigate on click" },
+    showClearSelectionText: { title: "Show the clear selection text" }
   },
   properties: widget => {
-    return getProperties(widget);
+    return getProperties(widget as unknown as Scrivito.Widget);
   },
   initialContent: {
     selectionType: "radio",
@@ -44,7 +46,9 @@ Scrivito.provideEditingConfig("FormSelectWidget", {
     linearScaleLowerLimit: "1",
     linearScaleUpperLimit: "5",
     clearSelectionText: "Clear selection",
-    inlineView: false
+    inlineView: false,
+    navigateOnClick: false,
+    showClearSelectionText: true
   },
   validations: [
     insideFormContainerValidation,
@@ -65,13 +69,17 @@ Scrivito.provideEditingConfig("FormSelectWidget", {
 });
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function getProperties(widget: Scrivito.Obj): any[] {
+function getProperties(widget: Scrivito.Widget): any[] {
   const type = widget.get("selectionType");
+  const isSingleStep = widget.container()?.get("isSingleStep")
+
   const props = [
     "selectionType",
     "title",
     "customFieldName",
     ["required", { enabled: type !== "multi" }],
+    ["navigateOnClick", { enabled: type == "radio" && isSingleStep == false }],
+    "showClearSelectionText",
     "helpText"
   ];
   // show/hide inlineView
