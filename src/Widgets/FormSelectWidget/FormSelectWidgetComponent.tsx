@@ -16,6 +16,7 @@ Scrivito.provideComponent(FormSelectWidget, ({ widget, navigate }: any) => {
   const items = widget.get("items");
   const isMultiSelect = widget.get("selectionType") == "multi";
   const isDropdown = widget.get("selectionType") == "dropdown";
+
   if (!items.length && widget.get("selectionType") != "linear-scale") {
     return (
       <InPlaceEditingPlaceholder center>
@@ -26,28 +27,32 @@ Scrivito.provideComponent(FormSelectWidget, ({ widget, navigate }: any) => {
 
   return (
     <div className="select-container mb-3" ref={ref}>
-      <div className="select-title">
-        <span className="text-super"> {widget.get("title")} </span>
-        {!isMultiSelect && widget.get("required") && <Mandatory />}
-        {widget.get("helpText") && <HelpText widget={widget} />}
-      </div>
       {isDropdown ? (
         <Dropdown
-          id={widget.id()}
           name={getFieldName(widget)}
           options={items}
-          required={widget.get("required")}
+          widget={widget}
         />
       ) : (
-        <Select
-          isMultiSelect={isMultiSelect}
-          required={widget.get("required")}
-          widget={widget}
-          name={getFieldName(widget)}
-          onChange={() => setSelected(true)}
-          onClickNavigate={() => (isMultiSelect || !widget.get("navigateOnClick")) ? null : navigate(true)}
-
-        />
+        <>
+          <div className="select-title">
+            <span className="text-super">{widget.get("title")}</span>
+            {!isMultiSelect && widget.get("required") && <Mandatory />}
+            {widget.get("helpText") && <HelpText widget={widget} />}
+          </div>
+          <Select
+            isMultiSelect={isMultiSelect}
+            required={widget.get("required")}
+            widget={widget}
+            name={getFieldName(widget)}
+            onChange={() => setSelected(true)}
+            onClickNavigate={() =>
+              isMultiSelect || !widget.get("navigateOnClick")
+                ? null
+                : navigate(true)
+            }
+          />
+        </>
       )}
       {showReset() && (
         <ResetInputs
@@ -58,6 +63,7 @@ Scrivito.provideComponent(FormSelectWidget, ({ widget, navigate }: any) => {
       )}
     </div>
   );
+
   function showReset(): boolean {
     return (
       widget.get("showClearSelectionText") &&
