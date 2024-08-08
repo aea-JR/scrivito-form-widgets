@@ -10,6 +10,7 @@ import { FormSelectWidget } from "./FormSelectWidgetClass";
 import { ResetInputs } from "../FormStepContainerWidget/components/ResetInputsComponent";
 import "./FormSelectWidget.scss";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 Scrivito.provideComponent(FormSelectWidget, ({ widget, navigate }: any) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const [selected, setSelected] = React.useState(false);
