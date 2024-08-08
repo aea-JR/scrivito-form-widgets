@@ -26,7 +26,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
   return (
     <div className={`dropdown-wrapper ${isSelected ? "is-selected" : ""}`}>
       <label htmlFor={id} className="dropdown-label">
-        {widget.get("label") as string} {required && <Mandatory />}  {widget.get("helpText") && <HelpText widget={widget} />}
+        {widget.get("title") as string} {required && <Mandatory />}  {widget.get("helpText") && <HelpText widget={widget} />}
       </label>
       <select
         className="dropdown-select"
