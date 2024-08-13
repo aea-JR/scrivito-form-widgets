@@ -1,6 +1,6 @@
 {
   "name": "my-test-form-widgets",
-  "version": "0.0.248",
+  "version": "0.0.250",
   "description": "Testing package for Scrivito Neoletter Form Widgets DO NOT USE!",
   "main": "index.js",
   "scripts": {

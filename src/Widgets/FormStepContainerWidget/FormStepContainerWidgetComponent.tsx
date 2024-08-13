@@ -16,12 +16,14 @@ import { FormCaptcha } from "./components/FormCaptchaComponent";
 import { CaptchaTheme, InputValidationElement } from "../../../types/types";
 import "./FormStepContainerWidget.scss";
 import "bootstrap-icons/font/bootstrap-icons.scss";
+import { useFormSubmission } from "./contexts/FormSubmissionContext";
 
 Scrivito.provideComponent(FormStepContainerWidget, ({ widget }) => {
   const tenant = getInstanceId();
   if (isEmpty(tenant)) {
     return <FormNoTenant />;
   }
+  const { onSuccess, onFailure } = useFormSubmission();
   const formEndpoint = `https://api.justrelate.com/neoletter/instances/${tenant}/form_submissions`;
   const [currentStep, setCurrentStepNumber] = React.useState(1);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
@@ -160,12 +162,14 @@ Scrivito.provideComponent(FormStepContainerWidget, ({ widget }) => {
     try {
       await submitForm(formElement, formEndpoint, widget);
       indicateSuccess();
+      onSuccess?.();
     } catch (e) {
       setTimeout(() => {
         throw e;
       }, 0);
 
       indicateFailure();
+      onFailure?.();
     }
   }
 
