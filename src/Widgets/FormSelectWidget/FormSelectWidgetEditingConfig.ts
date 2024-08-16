@@ -33,7 +33,8 @@ Scrivito.provideEditingConfig("FormSelectWidget", {
       description: "When enabled, all items will be displayed in a single row."
     },
     navigateOnClick: { title: "Navigate on click" },
-    showClearSelectionText: { title: "Show the clear selection text" }
+    showClearSelectionText: { title: "Show the clear selection text" },
+    useFloatingLabel: { title: "Enable Floating Label" }
   },
   properties: widget => {
     return getProperties(widget as unknown as Scrivito.Widget);
@@ -48,7 +49,8 @@ Scrivito.provideEditingConfig("FormSelectWidget", {
     clearSelectionText: "Clear selection",
     inlineView: false,
     navigateOnClick: false,
-    showClearSelectionText: true
+    showClearSelectionText: true,
+    useFloatingLabel: false
   },
   validations: [
     insideFormContainerValidation,
@@ -79,6 +81,7 @@ function getProperties(widget: Scrivito.Widget): any[] {
     "customFieldName",
     ["required", { enabled: type !== "multi" }],
     ["navigateOnClick", { enabled: type == "radio" && isSingleStep == false }],
+    ["useFloatingLabel", { enabled: type == "dropdown" }],
     "showClearSelectionText",
     "helpText"
   ];

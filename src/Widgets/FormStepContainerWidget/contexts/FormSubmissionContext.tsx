@@ -10,13 +10,11 @@ const FormSubmissionContext = createContext<FormSubmissionContextProps>({});
 
 export const useFormSubmission = () => useContext(FormSubmissionContext);
 
-interface FormSubmissionProviderProps {
-	children: ReactNode;
+export const FormSubmissionProvider: React.FC<{
 	onSuccess?: () => void;
 	onFailure?: () => void;
-}
-
-export const FormSubmissionProvider: React.FC<FormSubmissionProviderProps> = ({ children, onSuccess, onFailure }) => {
+	children: ReactNode;
+}> = ({ children, onSuccess, onFailure }) => {
 	return (
 		<FormSubmissionContext.Provider value={{ onSuccess, onFailure }}>
 			{children}

@@ -32,6 +32,7 @@ Scrivito.provideComponent(FormSelectWidget, ({ widget, navigate }: any) => {
         <Dropdown
           name={getFieldName(widget)}
           options={items}
+          useFloatingLabel={widget.get("useFloatingLabel") || false}
           widget={widget}
         />
       ) : (

@@ -62,28 +62,31 @@
     
       padding-bottom: 1em;
     
-    .dropdown-label {
-      position: absolute;
-      top: 40%;
-      left: 10px;
-      transform: translateY(-50%);
-      transition: all 0.2s ease;
-      pointer-events: none;
-      font-size: 19px;
-      color: #495054;
-    }
 
-    &.is-selected .dropdown-label,
-    .dropdown-select:focus + .dropdown-label {
-      top: -15px;
-      left: 10px;
-      font-size: 19px;
-      color: #333;
-      .mandatory-container span {
-        color:var(--bs-danger, #f03a47);
+    
+    // TODO: Adjust padding/margin top for floated label  (maybe pt-3 instead of mb-3?)
+    &.floating-label {
+      .dropdown-label {
+        position: absolute;
+        top: 30%;
+        left: 2px;
+        transform: translateY(-50%);
+        transition: all 0.2s ease;
+        pointer-events: none;
       }
-      .helptext-container {
-        display: inline-block;
+      
+      &.is-selected .dropdown-label,
+      .dropdown-select:focus + .dropdown-label {
+        top: -15px;
+        left: 0;
+        
+        .mandatory-container span {
+          color: var(--bs-danger, #f03a47);
+        }
+        
+        .helptext-container {
+          display: inline-block;
+        }
       }
     }
     .dropdown-select {
