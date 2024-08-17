@@ -1,0 +1,29 @@
+.form-input-container {
+width: 100%;
+position: relative;
+	    // TODO: Adjust padding/margin top for floated label  (maybe pt-3 instead of mb-3?)
+	//TODO Check textarea
+			&.floating-label {
+				.input-label {
+					position: absolute;
+					top: 4px;
+					left: 0.75rem;
+				//	transform: translateY(-50%);
+					transition: all 0.2s ease;
+					pointer-events: none;
+				}
+				
+				&.is-selected .input-label {
+					top: -25px;
+					left: 0;
+					
+					.mandatory-container span {
+						color: var(--bs-danger, #f03a47);
+					}
+					
+					.helptext-container {
+						display: inline-block;
+					}
+				}
+			}
+}
