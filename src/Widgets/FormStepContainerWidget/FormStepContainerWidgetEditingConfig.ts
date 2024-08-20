@@ -248,7 +248,8 @@ Scrivito.provideEditingConfig("FormStepContainerWidget", {
     showReviewFooter: false,
     reviewButtonText: "Review",
     reviewHeaderTitle: "Review",
-    reviewCloseButtonText: "Close"
+    reviewCloseButtonText: "Close",
+    menuButtonText: "Menu"
   },
   validations: [
     (widget: Scrivito.Widget) => {
@@ -323,7 +324,8 @@ function getNavigationProperties(widget: Scrivito.Widget): string[] {
   const MultiStepNavigationProps = [
     "forwardButtonText",
     "backwardButtonText",
-    "submitButtonText"
+    "submitButtonText",
+    "menuButtonText"
   ];
   if (widget.get("formType") == "single-step") {
     return singleStepNavigationProps;

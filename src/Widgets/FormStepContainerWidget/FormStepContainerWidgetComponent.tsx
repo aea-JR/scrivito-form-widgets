@@ -18,20 +18,19 @@ import "./FormStepContainerWidget.scss";
 import "bootstrap-icons/font/bootstrap-icons.scss";
 import { useFormSubmission } from "./contexts/FormSubmissionContext";
 
-Scrivito.provideComponent(FormStepContainerWidget, ({ widget }) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+Scrivito.provideComponent(FormStepContainerWidget, ({ widget, activeStep, onClickMenu, clearKey }: any) => {
   const tenant = getInstanceId();
   if (isEmpty(tenant)) {
     return <FormNoTenant />;
   }
   const { onSuccess, onFailure } = useFormSubmission();
   const formEndpoint = `https://api.justrelate.com/neoletter/instances/${tenant}/form_submissions`;
-  const [currentStep, setCurrentStepNumber] = React.useState(1);
+  const [currentStep, setCurrentStepNumber] = React.useState<number>(activeStep || 1);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [successfullySent, setSuccessfullySent] = React.useState(false);
   const [submissionFailed, setSubmissionFailed] = React.useState(false);
-  const [reCaptchaToken, setReCaptchaToken] = React.useState<string | null>(
-    null
-  );
+  const [reCaptchaToken, setReCaptchaToken] = React.useState<string | null>(null);
   const [isSubmitDisabled, setIsSubmitDisabled] = React.useState(false);
   const isSingleStep = widget.get("formType") == "single-step";
   const stepsLength = widget.get("steps").length;
@@ -50,7 +49,7 @@ Scrivito.provideComponent(FormStepContainerWidget, ({ widget }) => {
       return;
     }
     // in order to show step number in the props title of each step
-    const steps = widget.get("steps");
+    const steps: Scrivito.Widget[] = widget.get("steps");
     steps.forEach((step, i) => {
       const stepNumber = i + 1;
       step.update({
@@ -64,6 +63,12 @@ Scrivito.provideComponent(FormStepContainerWidget, ({ widget }) => {
       widget.update({ formType: "single-step" });
     }
   }, [widget.get("steps")]);
+
+  React.useEffect(() => {
+    if (activeStep) {
+      setCurrentStepNumber(activeStep);
+    }
+  }, [activeStep]);
 
   if (isSubmitting) {
     return <FormSubmitting submittingText={widget.get("submittingMessage")} />;
@@ -87,6 +92,7 @@ Scrivito.provideComponent(FormStepContainerWidget, ({ widget }) => {
 
   return (
     <div
+      key={clearKey}
       className={`scrivito-neoletter-form-widgets form-container-widget ${widget.get("showBorder") ? "form-border" : ""
         }`}
     >
@@ -97,7 +103,7 @@ Scrivito.provideComponent(FormStepContainerWidget, ({ widget }) => {
           attribute={"steps"}
           widgetProps={{
             getData: (stepId: string) => {
-              const steps = widget.get("steps");
+              const steps: Scrivito.Widget[] = widget.get("steps");
               let isActive = false;
               let stepNumber = 0;
               steps.some((step, index) => {
@@ -139,6 +145,7 @@ Scrivito.provideComponent(FormStepContainerWidget, ({ widget }) => {
           isLastPage={isLastPage}
           showReview={showReview}
           submitDisabled={isSubmitDisabled}
+          onClickMenu={onClickMenu}
         />
       )}
     </div>

@@ -12,6 +12,7 @@ interface FormFooterMultiStepsProps {
   stepsLength: number;
   showReview: boolean;
   submitDisabled: boolean;
+  onClickMenu: () => void;
 }
 
 export const FormFooterMultiSteps: React.FC<FormFooterMultiStepsProps> =
@@ -22,9 +23,10 @@ export const FormFooterMultiSteps: React.FC<FormFooterMultiStepsProps> =
       onSubmit,
       currentStep,
       isLastPage,
-      stepsLength,
+      // stepsLength,
       showReview,
-      submitDisabled
+      submitDisabled,
+      onClickMenu
     }) => {
       const [show, setShow] = React.useState(false);
       const [reviewContent, setReviewContent] = React.useState<ReviewContent>(
@@ -40,9 +42,15 @@ export const FormFooterMultiSteps: React.FC<FormFooterMultiStepsProps> =
               hidden={currentStep == 1 && !Scrivito.isInPlaceEditingActive()}>
               {widget.get("backwardButtonText") as string}
             </button>
-            <div className="step-counter">
+            <button
+              className="btn btn-primary menu-button"
+              onClick={onClickMenu}
+            >
+              {widget.get("menuButtonText") as string}
+            </button>
+            {/* <div className="step-counter">
               {currentStep + " / " + stepsLength}
-            </div>
+            </div> */}
             {doShowReview && (
               <button
                 className="btn btn-primary review-button"
