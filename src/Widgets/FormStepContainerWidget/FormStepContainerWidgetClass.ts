@@ -5,6 +5,7 @@ export const FormStepContainerWidget = Scrivito.provideWidgetClass(
   {
     attributes: {
       menuButtonText: "string",
+      retryButtonText: "string",
       showCaptcha: "boolean",
       friendlyCaptchaLanguage: "string",
       googleRecaptchaLanguage: "string",

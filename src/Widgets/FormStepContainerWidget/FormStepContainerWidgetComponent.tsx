@@ -82,73 +82,83 @@ Scrivito.provideComponent(FormStepContainerWidget, ({ widget, activeStep, onClic
     );
   }
 
-  if (submissionFailed) {
-    return (
-      <FormSubmissionFailed
-        submissionFailureText={widget.get("failedMessage")}
-      />
-    );
-  }
+  // if (submissionFailed) {
+  //   return (
+  //     <FormSubmissionFailed
+  //       submissionFailureText={widget.get("failedMessage")}
+  //       onReSubmit={onSubmit}
+  //     />
+  //   );
+  // }
 
   return (
-    <div
-      key={clearKey}
-      className={`scrivito-neoletter-form-widgets form-container-widget ${widget.get("showBorder") ? "form-border" : ""
-        }`}
-    >
-      <form method="post" id={widget.get("formId")}>
-        <FormHiddenFields widget={widget} />
-        <Scrivito.ContentTag
-          content={widget}
-          attribute={"steps"}
-          widgetProps={{
-            getData: (stepId: string) => {
-              const steps: Scrivito.Widget[] = widget.get("steps");
-              let isActive = false;
-              let stepNumber = 0;
-              steps.some((step, index) => {
-                if (step.id() == stepId) {
-                  stepNumber = index + 1;
-                  isActive = stepNumber == currentStep;
-                  return true;
-                }
-              });
-              return { stepNumber, isActive, isSingleStep };
-            },
-            navigateOnClick: () => onPageChange
-          }
-          }
-        />
-        {showCaptcha && (
-          <FormCaptcha
+    <>
+      <FormSubmissionFailed
+        hidden={!submissionFailed}
+        submissionFailureText={widget.get("failedMessage")}
+        onReSubmit={onSubmit}
+        retryButtonText={widget.get("retryButtonText") || "Retry"}
+      />
+      <div
+        hidden={submissionFailed}
+        key={clearKey}
+        className={`scrivito-neoletter-form-widgets form-container-widget ${widget.get("showBorder") ? "form-border" : ""
+          }`}
+      >
+        <form method="post" id={widget.get("formId")}>
+          <FormHiddenFields widget={widget} />
+          <Scrivito.ContentTag
+            content={widget}
+            attribute={"steps"}
+            widgetProps={{
+              getData: (stepId: string) => {
+                const steps: Scrivito.Widget[] = widget.get("steps");
+                let isActive = false;
+                let stepNumber = 0;
+                steps.some((step, index) => {
+                  if (step.id() == stepId) {
+                    stepNumber = index + 1;
+                    isActive = stepNumber == currentStep;
+                    return true;
+                  }
+                });
+                return { stepNumber, isActive, isSingleStep };
+              },
+              navigateOnClick: () => onPageChange
+            }
+            }
+          />
+          {showCaptcha && (
+            <FormCaptcha
+              widget={widget}
+              alignment={widget.get("captchaAlignment") || "center"}
+              theme={(widget.get("captchaTheme") || "light") as CaptchaTheme}
+              hidden={!(isLastPage || Scrivito.isInPlaceEditingActive())}
+              onChangeCaptcha={setReCaptchaToken}
+            />
+          )}
+        </form>
+        {isSingleStep ? (
+          <FormFooterSingleStep
             widget={widget}
-            alignment={widget.get("captchaAlignment") || "center"}
-            theme={(widget.get("captchaTheme") || "light") as CaptchaTheme}
-            hidden={!(isLastPage || Scrivito.isInPlaceEditingActive())}
-            onChangeCaptcha={setReCaptchaToken}
+            onSubmit={onSubmit}
+            submitDisabled={isSubmitDisabled}
+          />
+        ) : (
+          <FormFooterMultiSteps
+            widget={widget}
+            onSubmit={onSubmit}
+            onPageChange={onPageChange}
+            currentStep={currentStep}
+            stepsLength={stepsLength}
+            isLastPage={isLastPage}
+            showReview={showReview}
+            submitDisabled={isSubmitDisabled}
+            onClickMenu={onClickMenu}
           />
         )}
-      </form>
-      {isSingleStep ? (
-        <FormFooterSingleStep
-          widget={widget}
-          onSubmit={onSubmit}
-          submitDisabled={isSubmitDisabled}
-        />
-      ) : (
-        <FormFooterMultiSteps
-          widget={widget}
-          onSubmit={onSubmit}
-          onPageChange={onPageChange}
-          currentStep={currentStep}
-          stepsLength={stepsLength}
-          isLastPage={isLastPage}
-          showReview={showReview}
-          submitDisabled={isSubmitDisabled}
-          onClickMenu={onClickMenu}
-        />
-      )}
-    </div>
+      </div>
+    </>
   );
 
   async function onSubmit(): Promise<void> {

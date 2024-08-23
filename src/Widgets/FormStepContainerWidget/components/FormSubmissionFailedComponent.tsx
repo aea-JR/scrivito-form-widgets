@@ -2,16 +2,25 @@ import * as React from "react";
 
 interface FormSubmissionFailedProps {
   submissionFailureText: string;
+  onReSubmit: () => Promise<void>;
+  hidden: boolean;
+  retryButtonText: string;
 }
 export const FormSubmissionFailed: React.FC<FormSubmissionFailedProps> = ({
-  submissionFailureText
+  submissionFailureText,
+  onReSubmit,
+  hidden,
+  retryButtonText
 }) => {
   return (
-    <div className="scrivito-neoletter-form-widgets form-container-widget text-center">
+    <div hidden={hidden} className="scrivito-neoletter-form-widgets form-container-widget text-center full-width">
       <i
-        className="bi bi-exclamation-triangle-fill bi-2x"
+        className="bi bi-exclamation-triangle-fill bi-5x"
         aria-hidden="true"></i>{" "}
-      <span className="text-super">{submissionFailureText}</span>
+      <h5 className="text-super submission-failed-text">{submissionFailureText}</h5>
+      <div>
+        <button className="btn btn-primary retry-button" onClick={onReSubmit}>{retryButtonText}</button>
+      </div>
     </div>
   );
 };

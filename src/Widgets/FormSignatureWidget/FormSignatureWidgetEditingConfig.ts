@@ -8,10 +8,11 @@ Scrivito.provideEditingConfig("FormSignatureWidget", {
   // thumbnail: formDateWidgetIcon,
   attributes: {
     title: { title: "Label" },
+    deleteButtonText: { title: "Delete button text" },
     customFieldName: { title: "Field name" },
     helpText: { title: "Help text" }
   },
-  properties: ["title", "customFieldName", "helpText"],
+  properties: ["title", "customFieldName", "helpText", "deleteButtonText"],
   initialContent: {
     title: "Sign here",
     customFieldName: "custom_"

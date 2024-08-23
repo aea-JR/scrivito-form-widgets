@@ -4,7 +4,8 @@ import { isEmpty } from "../utils/lodashPolyfills";
 
 interface SignatureProps {
 	id: string,
-	onChange: (dataUrl: string) => void
+	onChange: (dataUrl: string) => void,
+	deleteButtonText: string
 }
 
 interface Point {
@@ -24,7 +25,7 @@ const STROKE_THICKNESS = 2;
 const STROKE_COLOR = 'black';
 const BACKGROUND_COLOR = '#ffffff';
 
-export const Signature: React.FC<SignatureProps> = ({ id, onChange }) => {
+export const Signature: React.FC<SignatureProps> = ({ id, onChange, deleteButtonText }) => {
 	const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
 	const [drawingState, setDrawingState] = React.useState<DrawingState>({
 		clickX: [],
@@ -147,7 +148,7 @@ export const Signature: React.FC<SignatureProps> = ({ id, onChange }) => {
 	const deleteButton = (): JSX.Element => {
 		return (
 			<button className="delete btn btn-primary" onClick={deleteSignature}>
-				<span className="delete-text">Löschen</span>
+				<span className="delete-text">{deleteButtonText}</span>
 			</button>
 		);
 	}

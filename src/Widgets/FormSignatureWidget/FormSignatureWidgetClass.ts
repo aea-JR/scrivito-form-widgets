@@ -4,6 +4,7 @@ export const FormSignatureWidget = Scrivito.provideWidgetClass("FormSignatureWid
   attributes: {
     title: "string",
     helpText: "html",
+    deleteButtonText: "string",
     customFieldName: "string"
   }
 });

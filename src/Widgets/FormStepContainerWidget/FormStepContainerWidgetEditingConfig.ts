@@ -64,6 +64,9 @@ Scrivito.provideEditingConfig("FormStepContainerWidget", {
     failedMessage: {
       title: "Message shown if the form submission failed"
     },
+    retryButtonText: {
+      title: "Retry button text"
+    },
     hiddenFields: {
       title: "Hidden fields"
     },
@@ -131,7 +134,8 @@ Scrivito.provideEditingConfig("FormStepContainerWidget", {
     "showBorder",
     "submittingMessage",
     "submittedMessage",
-    "failedMessage"
+    "failedMessage",
+    "retryButtonText"
   ],
   propertiesGroups: (widget) => {
     const groups = [
@@ -190,6 +194,7 @@ Scrivito.provideEditingConfig("FormStepContainerWidget", {
       "Your message has been successfully sent. Thank you for your request. We will get back to you as soon as possible.",
     failedMessage:
       "We are sorry, your request could not be completed. Please try again later.",
+    retryButtonText: "Retry",
     formType: "single-step",
     singleSubmitButtonAlignment: "text-center",
     steps: [

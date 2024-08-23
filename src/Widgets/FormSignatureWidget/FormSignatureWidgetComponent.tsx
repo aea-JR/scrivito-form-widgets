@@ -21,6 +21,7 @@ Scrivito.provideComponent(FormSignatureWidget, ({ widget }) => {
       <Signature
         id={widget.id()}
         onChange={onChangeSignature}
+        deleteButtonText={widget.get("deleteButtonText") || "Delete"}
       ></Signature>
       <input
         type="hidden"
