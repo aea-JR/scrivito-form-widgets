@@ -31,6 +31,7 @@ Scrivito.provideComponent(FormContainerWidget, ({ widget }) => {
     return (
       <FormSubmissionSucceeded
         submissionSuccessText={widget.get("submittedMessage")}
+        submissionSuccessSecondText=""
       />
     );
   }
@@ -39,6 +40,8 @@ Scrivito.provideComponent(FormContainerWidget, ({ widget }) => {
     return (
       <FormSubmissionFailed
         submissionFailureText={widget.get("failedMessage")}
+        hidden={!submissionFailed}
+        retryButtonText="Retry"
       />
     );
   }

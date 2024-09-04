@@ -22,8 +22,8 @@ Scrivito.provideEditingConfig("FormCheckboxWidget", {
   },
   properties: (widget: Scrivito.Widget) =>
     isCustomType(widget)
-      ? ["type", "customFieldName", "label", "required", "helpText"]
-      : ["type", "label", "required", "helpText"],
+      ? ["type", "customFieldName", "label", "required", "helpText", "isCommercial", "isGerman"]
+      : ["type", "label", "required", "helpText", "isCommercial", "isGerman"],
   initialContent: {
     type: "custom",
     customFieldName: "custom_checkbox",

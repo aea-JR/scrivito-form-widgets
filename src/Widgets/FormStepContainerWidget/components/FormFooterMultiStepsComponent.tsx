@@ -23,7 +23,7 @@ export const FormFooterMultiSteps: React.FC<FormFooterMultiStepsProps> =
       onSubmit,
       currentStep,
       isLastPage,
-      // stepsLength,
+      stepsLength,
       showReview,
       submitDisabled,
       onClickMenu
@@ -42,15 +42,16 @@ export const FormFooterMultiSteps: React.FC<FormFooterMultiStepsProps> =
               hidden={currentStep == 1 && !Scrivito.isInPlaceEditingActive()}>
               {widget.get("backwardButtonText") as string}
             </button>
-            <button
+
+            {/* <button
               className="btn btn-primary menu-button"
               onClick={onClickMenu}
             >
               {widget.get("menuButtonText") as string}
-            </button>
-            {/* <div className="step-counter">
+            </button> */}
+            <div className="step-counter">
               {currentStep + " / " + stepsLength}
-            </div> */}
+            </div>
             {doShowReview && (
               <button
                 className="btn btn-primary review-button"
@@ -64,16 +65,26 @@ export const FormFooterMultiSteps: React.FC<FormFooterMultiStepsProps> =
               onClick={() => onPageChange(true)}
               hidden={isLastPage}
             >
+
               {(widget.get("forwardButtonText") as string)}
             </button>
 
-            <button
+
+            {/* <button
               className="btn btn-primary submit-button"
               onClick={onSubmit}
               disabled={isLastPage && submitDisabled}
               hidden={!(isLastPage || Scrivito.isInPlaceEditingActive())}
             >
               {(widget.get("submitButtonText") as string)}
+            </button> */}
+            <button
+              className="btn btn-primary submit-button"
+              onClick={onSubmit}
+              disabled={isLastPage && submitDisabled}
+              hidden={!(isLastPage || Scrivito.isInPlaceEditingActive())}
+            >
+              <i className="bi bi-check-lg"></i>
             </button>
 
           </div>

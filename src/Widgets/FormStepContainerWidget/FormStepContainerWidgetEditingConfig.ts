@@ -134,6 +134,7 @@ Scrivito.provideEditingConfig("FormStepContainerWidget", {
     "showBorder",
     "submittingMessage",
     "submittedMessage",
+    "submittedSecondMessage",
     "failedMessage",
     "retryButtonText"
   ],

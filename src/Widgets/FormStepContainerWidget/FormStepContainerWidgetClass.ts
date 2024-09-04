@@ -29,6 +29,7 @@ export const FormStepContainerWidget = Scrivito.provideWidgetClass(
       formId: "string",
       failedMessage: "string",
       submittedMessage: "string",
+      submittedSecondMessage: "string",
       submittingMessage: "string",
       hiddenFields: ["widgetlist", { only: "FormHiddenFieldWidget" }],
       formType: [

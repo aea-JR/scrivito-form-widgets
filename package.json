@@ -1,6 +1,6 @@
 {
   "name": "my-test-form-widgets",
-  "version": "0.1.2",
+  "version": "0.1.15",
   "description": "Testing package for Scrivito Neoletter Form Widgets DO NOT USE!",
   "main": "index.js",
   "scripts": {
@@ -72,5 +72,8 @@
     "webpack-cli": "^4.10.0"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "react-bootstrap": "^2.10.4"
+  }
 }

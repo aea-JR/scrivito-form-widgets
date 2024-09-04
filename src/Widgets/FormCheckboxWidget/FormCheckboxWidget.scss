@@ -6,3 +6,29 @@
     }
   }
 }
+
+
+.modal {
+  .modal-dialog {
+    .modal-content {
+      .modal-header {
+        .modal-title {
+          color: #495054;
+        }
+      }
+      .modal-footer {
+ button {
+  color: #fff;
+  border: solid 1px #E95832;
+  background: #E95832;
+  box-shadow: none;
+  padding: 10px 30px 11px 30px;
+  font-size: 20px;
+  line-height: 32px;
+  border-radius: 100px;
+ }
+
+      }
+    }
+  }
+}

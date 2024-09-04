@@ -78,6 +78,7 @@ Scrivito.provideComponent(FormStepContainerWidget, ({ widget, activeStep, onClic
     return (
       <FormSubmissionSucceeded
         submissionSuccessText={widget.get("submittedMessage")}
+        submissionSuccessSecondText={widget.get("submittedSecondMessage")}
       />
     );
   }

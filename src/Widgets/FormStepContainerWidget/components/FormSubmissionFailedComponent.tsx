@@ -2,7 +2,8 @@ import * as React from "react";
 
 interface FormSubmissionFailedProps {
   submissionFailureText: string;
-  onReSubmit: () => Promise<void>;
+  //TODO: Fix this for legacy form
+  onReSubmit?: () => Promise<void>;
   hidden: boolean;
   retryButtonText: string;
 }
