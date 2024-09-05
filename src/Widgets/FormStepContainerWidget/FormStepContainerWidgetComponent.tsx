@@ -70,9 +70,9 @@ Scrivito.provideComponent(FormStepContainerWidget, ({ widget, activeStep, onClic
     }
   }, [activeStep]);
 
-  if (isSubmitting) {
-    return <FormSubmitting submittingText={widget.get("submittingMessage")} />;
-  }
+  // if (isSubmitting) {
+  //   return <FormSubmitting submittingText={widget.get("submittingMessage")} />;
+  // }
 
   if (successfullySent) {
     return (
@@ -94,6 +94,11 @@ Scrivito.provideComponent(FormStepContainerWidget, ({ widget, activeStep, onClic
 
   return (
     <>
+      <FormSubmitting
+        hidden={!isSubmitting}
+        submittingText={widget.get("submittingMessage")}
+      />;
+
       <FormSubmissionFailed
         hidden={!submissionFailed}
         submissionFailureText={widget.get("failedMessage")}
@@ -101,7 +106,7 @@ Scrivito.provideComponent(FormStepContainerWidget, ({ widget, activeStep, onClic
         retryButtonText={widget.get("retryButtonText") || "Retry"}
       />
       <div
-        hidden={submissionFailed}
+        hidden={submissionFailed || isSubmitting}
         key={clearKey}
         className={`scrivito-neoletter-form-widgets form-container-widget ${widget.get("showBorder") ? "form-border" : ""
           }`}

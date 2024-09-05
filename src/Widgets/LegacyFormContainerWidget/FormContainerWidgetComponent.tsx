@@ -24,7 +24,7 @@ Scrivito.provideComponent(FormContainerWidget, ({ widget }) => {
   const [submissionFailed, setSubmissionFailed] = React.useState(false);
 
   if (isSubmitting) {
-    return <FormSubmitting submittingText={widget.get("submittingMessage")} />;
+    return <FormSubmitting hidden={!isSubmitting} submittingText={widget.get("submittingMessage")} />;
   }
 
   if (successfullySent) {
