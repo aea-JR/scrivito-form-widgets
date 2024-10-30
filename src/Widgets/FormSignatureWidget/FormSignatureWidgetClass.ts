@@ -2,9 +2,18 @@ import * as Scrivito from "scrivito";
 
 export const FormSignatureWidget = Scrivito.provideWidgetClass("FormSignatureWidget", {
   attributes: {
-    title: "string",
+    title: "html",
     helpText: "html",
+    customFieldName: "string",
+    strokeThickness: "integer",
+    strokeColor: "string",
+    backgroundColor: "string",
     deleteButtonText: "string",
-    customFieldName: "string"
+    deleteButtonAlignment: [
+      "enum",
+      {
+        values: ["left", "text-center", "text-end", "block"]
+      }
+    ]
   }
 });

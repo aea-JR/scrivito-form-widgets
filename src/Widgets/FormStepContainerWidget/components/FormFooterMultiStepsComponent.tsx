@@ -12,7 +12,6 @@ interface FormFooterMultiStepsProps {
   stepsLength: number;
   showReview: boolean;
   submitDisabled: boolean;
-  onClickMenu: () => void;
 }
 
 export const FormFooterMultiSteps: React.FC<FormFooterMultiStepsProps> =
@@ -25,8 +24,7 @@ export const FormFooterMultiSteps: React.FC<FormFooterMultiStepsProps> =
       isLastPage,
       stepsLength,
       showReview,
-      submitDisabled,
-      onClickMenu
+      submitDisabled
     }) => {
       const [show, setShow] = React.useState(false);
       const [reviewContent, setReviewContent] = React.useState<ReviewContent>(
@@ -42,13 +40,6 @@ export const FormFooterMultiSteps: React.FC<FormFooterMultiStepsProps> =
               hidden={currentStep == 1 && !Scrivito.isInPlaceEditingActive()}>
               {widget.get("backwardButtonText") as string}
             </button>
-
-            {/* <button
-              className="btn btn-primary menu-button"
-              onClick={onClickMenu}
-            >
-              {widget.get("menuButtonText") as string}
-            </button> */}
             <div className="step-counter">
               {currentStep + " / " + stepsLength}
             </div>
@@ -65,26 +56,16 @@ export const FormFooterMultiSteps: React.FC<FormFooterMultiStepsProps> =
               onClick={() => onPageChange(true)}
               hidden={isLastPage}
             >
-
               {(widget.get("forwardButtonText") as string)}
             </button>
 
-
-            {/* <button
-              className="btn btn-primary submit-button"
-              onClick={onSubmit}
-              disabled={isLastPage && submitDisabled}
-              hidden={!(isLastPage || Scrivito.isInPlaceEditingActive())}
-            >
-              {(widget.get("submitButtonText") as string)}
-            </button> */}
             <button
               className="btn btn-primary submit-button"
               onClick={onSubmit}
               disabled={isLastPage && submitDisabled}
               hidden={!(isLastPage || Scrivito.isInPlaceEditingActive())}
             >
-              <i className="bi bi-check-lg"></i>
+              {(widget.get("submitButtonText") as string)}
             </button>
 
           </div>

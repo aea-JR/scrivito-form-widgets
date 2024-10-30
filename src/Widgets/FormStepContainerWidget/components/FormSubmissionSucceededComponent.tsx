@@ -1,24 +1,28 @@
 import * as React from "react";
+import * as Scrivito from "scrivito";
 
 interface FormSubmissionSucceededProps {
   submissionSuccessText: string;
-  submissionSuccessSecondText: string
+  type: string;
+  widget: Scrivito.Widget
 }
 
 export const FormSubmissionSucceeded: React.FC<
   FormSubmissionSucceededProps
-> = ({ submissionSuccessText, submissionSuccessSecondText }) => {
+> = ({ submissionSuccessText, type, widget }) => {
   return (
-    <div className="scrivito-neoletter-form-widgets  text-center">
-      {/* <div>
-        <p className="text-super">Your JustRelate Code is</p>
-        <p className="text-super">AB123_4x</p>
-
-      </div> */}
-      <h1 className="text_center center_codepage"><small className="block h2 medium">{submissionSuccessText}</small><strong className="block">{submissionSuccessSecondText}</strong></h1>
-
-      {/* <i className="bi bi-check-lg bi-2x" aria-hidden="true"></i>{" "} */}
-      {/* <span className="text-super">{submissionSuccessText}</span> */}
+    <div className="form-submission-succeeded">
+      {type == "default" ?
+        <div className="text-center">
+          <i className="bi bi-check-lg bi-2x" aria-hidden="true"></i>{" "}
+          <span>{submissionSuccessText}</span>
+        </div>
+        :
+        <Scrivito.ContentTag
+          content={widget}
+          attribute={"submittedMessageWidgets"}
+        />
+      }
     </div>
   );
 };

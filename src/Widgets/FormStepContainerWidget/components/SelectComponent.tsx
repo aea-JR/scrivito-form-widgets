@@ -25,7 +25,7 @@ export const Select: React.FC<SelectProps> = Scrivito.connect(
     if (type == "radio" || type == "multi") {
       const items = widget.get("items") as string[];
       return (
-        <div className={`${widget.get("inlineView") ? "inline" : "row"} `}>
+        <div className={`${widget.get("inlineView") ? "inline" : "row"}`}>
           {items.map((itemValue, index) => (
             <SelectItem
               selectionType={isMultiSelect ? "multi" : "radio"}
@@ -59,8 +59,7 @@ export const SelectItem: React.FC<SelectItemProps> = ({
   onClickNavigate
 }: SelectItemProps) => {
   return (
-    <label
-      className={`select-label ${selectionType}`}>
+    <label className={`select-label ${selectionType}`}>
       <input
         className="form-check-input"
         name={name}

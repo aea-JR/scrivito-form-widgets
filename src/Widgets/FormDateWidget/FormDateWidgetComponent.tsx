@@ -4,22 +4,31 @@ import { getFieldName } from "../FormStepContainerWidget/utils/getFieldName";
 import { HelpText } from "../FormStepContainerWidget/components/HelpTextComponent";
 import { Mandatory } from "../FormStepContainerWidget/components/MandatoryComponent";
 import { FormDateWidget } from "./FormDateWidgetClass";
+import { isEmpty } from "../FormStepContainerWidget/utils/lodashPolyfills";
 import "./FormDateWidget.scss";
 
-Scrivito.provideComponent(FormDateWidget, ({ widget }) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+Scrivito.provideComponent(FormDateWidget, ({ widget, onInputChange }: any) => {
   const [value, setValue] = React.useState("");
   const onChangeValue = (e: React.BaseSyntheticEvent) => {
-    const d = new Date(e.target.value);
-    setValue(d.toISOString());
+
+    const isoStringDate = isEmpty(e.target.value) ? "" : new Date(e.target.value).toISOString();
+    setValue(isoStringDate);
+    onInputChange(getFieldName(widget), isoStringDate);
   };
   return (
     <div className="form-date mb-3">
-      <div className="date-title">
-        <span className="text-super">{widget.get("title")}</span>
-        {widget.get("required") && <Mandatory />}
-        {widget.get("helpText") && <HelpText widget={widget} />}
-      </div>
-
+      {widget.get("title") &&
+        <div className="date-title">
+          <Scrivito.ContentTag
+            attribute="title"
+            content={widget}
+            tag="span"
+          />
+          {widget.get("required") && <Mandatory />}
+          {widget.get("helpText") && <HelpText widget={widget} />}
+        </div>
+      }
       <input
         onChange={onChangeValue}
         className="datepicker"

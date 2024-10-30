@@ -10,7 +10,7 @@ export const FormSelectWidget = Scrivito.provideWidgetClass(
           values: ["radio", "dropdown", "multi", "linear-scale"]
         }
       ],
-      title: "string",
+      title: "html",
       items: "stringlist",
       customFieldName: "string",
       required: "boolean",
@@ -22,11 +22,11 @@ export const FormSelectWidget = Scrivito.provideWidgetClass(
       ],
       linearScaleLowerLabel: "string",
       linearScaleUpperLabel: "string",
-      showClearSelectionText: "boolean",
-      clearSelectionText: "string",
+      clearSelectionButtonText: "string",
       inlineView: "boolean",
+      useFloatingLabel: "boolean",
       navigateOnClick: "boolean",
-      useFloatingLabel: "boolean"
+      showClearSelectionButton: "boolean"
     }
   }
 );

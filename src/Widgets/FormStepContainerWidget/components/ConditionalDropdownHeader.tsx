@@ -8,15 +8,19 @@ export const DropdownHeader = Scrivito.connect(
   ({ widget, onChangeSelected }) => {
     return (
       <div
-        className={`mb-3 dropdown-container ${
-          Scrivito.isInPlaceEditingActive() ? "condition-wrapper" : ""
-        }`}>
-        <div className="select-title">
-          <span className="text-super">{widget.get("title")}</span>
+        className={`mb-3 dropdown-container ${Scrivito.isInPlaceEditingActive() ? "condition-wrapper" : ""
+          }`}>
+        {widget.get("title") && <div className="select-title">
+          <Scrivito.ContentTag
+            attribute="title"
+            content={widget}
+            tag="span"
+          />
           {widget.get("required") && <Mandatory />}
           {widget.get("helpText") && <HelpText widget={widget} />}
-        </div>
+        </div>}
         <select
+          className="form-select form-control"
           name={getFieldName(widget)}
           id={widget.id()}
           required={widget.get("required")}

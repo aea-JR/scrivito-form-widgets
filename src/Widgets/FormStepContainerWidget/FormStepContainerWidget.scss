@@ -1,18 +1,30 @@
 // Styles for FormContainerWidget
 .scrivito-neoletter-form-widgets.form-container-widget {
 
-  .dropdown-container,
-  .select-container {
-    .select-title {
-      display: flex;
-      align-items: baseline;
+  .fixed-container-height {
+      overflow-y: auto;
+      overflow-x: hidden;
     }
+  
+    .no-overscroll-y {
+      overscroll-behavior-y: none;
+    }
+  
+    .thin-scrollbar {
+      scrollbar-width: thin;
+    }
+  
+    .hidden-scrollbar {
+      scrollbar-width: none;
+    }
+  .btn-block {
+    width: 100%;
   }
 
-  .text-super {
-    vertical-align: super;
+  .form-control  {
+    font-size: 1rem;
   }
-
+  
   .text-mandatory {
     font-weight: 700;
     color: var(--bs-danger, #f03a47); //$secondary;
@@ -38,6 +50,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    white-space: nowrap;
 
     .step-counter {
       width: 100%;
@@ -86,11 +99,36 @@
     padding: 1em 0;
   }
 
+  // edit-mode 
+    &.edit-mode {
+
+      .form-check,
+      .rating-title,
+      .select-title,
+      .dropdown-label,
+      .signature-title,
+      .input-label,
+      .date-title {
+
+        label,
+        span {
+          display: ruby;
+        }
+      }
+    .fr-wrapper {
+      display: inline;
+      .fr-element {
+        display: inline;
+      }
+    }
+  }
+
   // popover
   .mandatory-container,
   .helptext-container {
     position: relative;
-    display: inline-block;
+    display: inline;
+    margin-left: 0.1em;
 
     .form-popover-container {
       position: absolute;
@@ -153,20 +191,24 @@
     }
   }
 
-  @keyframes rotate-icon {
-    0% {
-      transform: rotate(0deg);
-    }
-
-    100% {
-      transform: rotate(360deg);
-    }
+  
+}
+@keyframes rotate-form-submitting-icon {
+  0% {
+    transform: rotate(0deg);
   }
 
-  .rotate-icon {
-    display: inline-block;
-    animation: rotate-icon 2s linear 0s infinite;
+  100% {
+    transform: rotate(360deg);
   }
+}
+
+.form-submission-submitting .rotate-form-submitting-icon {
+  display: inline-block;
+  animation: rotate-form-submitting-icon 2s linear 0s infinite;
+}
+.form-submission-failed .retry-button {
+  margin-top: 1em;
 }
 
 // review modal
@@ -309,7 +351,6 @@ body .scrivito-neoletter-review-form-modal {
   .scrivito-neoletter-form-widgets.form-container-widget label,
   .scrivito-neoletter-form-widgets.form-container-widget .text-mandatory,
   .scrivito-neoletter-form-widgets.form-container-widget .bs-icon,
-  .scrivito-neoletter-form-widgets.form-container-widget .text-super,
   .card.card-theme .scrivito-neoletter-form-widgets.form-container-widget label,
   .card.card-theme .scrivito-neoletter-form-widgets.form-container-widget .text-mandatory,
   .card.card-theme .scrivito-neoletter-form-widgets.form-container-widget .bs-icon {

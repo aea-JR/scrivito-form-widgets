@@ -9,17 +9,19 @@
 
 .scrivito-neoletter-form-widgets .select-container {
   .select-title {
-    display: flex;
-    align-items: baseline;
+     display: inline-block;
+    p {
+      display: inline;
+    }
   }
   .select-label {
-    display: flex;
-    align-items: center;
+     display: flex;
+     align-items: center;
     span {
       margin-left: 0.4em;
     }
     .form-check-input {
-      margin-top: 0;
+      margin: 0;
     }
   }
   .dropdown-select {
@@ -29,81 +31,82 @@
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    & > * {
+    &>* {
       padding-right: 1em;
     }
   }
   .linear-scale-container {
     display: flex;
-    .lower-scale-label {
-      top: 20px;
+
+    .scale-label {
       position: relative;
-      margin-right: 1.5em;
-      align-self: flex-start;
-    }
-    .upper-scale-label {
-      top: 5px;
-      position: relative;
-      margin-left: 1.5em;
       align-self: flex-end;
+      line-height: 1em;
+      &.lower {
+        margin-right: 1.5em;
+      }
+      &.upper {
+        margin-left: 1.5em;
+      }
     }
+
     .linear-scale {
       flex-direction: column-reverse;
       width: auto;
+      align-items: center;
       span {
         margin-left: 0;
       }
     }
   }
-
   .dropdown-wrapper {
     position: relative;
     margin-top: 1.5rem;
-    
-      padding-bottom: 1em;
-    
-
-    
-    // TODO: Adjust padding/margin top for floated label  (maybe pt-3 instead of mb-3?)
+    p {
+      display: inline;
+    }
     &.floating-label {
+      min-height: 54px; 
+      padding-top: 1.25rem;
       .dropdown-label {
         position: absolute;
-        top: 30%;
-        left: 2px;
+        top: 68%;
+        left: 12px;    
         transform: translateY(-50%);
         transition: all 0.2s ease;
         pointer-events: none;
       }
-      
+      .helptext-container {
+        pointer-events: auto;
+        display: none;
+      }
+  
+      .mandatory-container {
+        pointer-events: auto;
+  
+        span {
+          color: #333;
+        }
+      }
+
       &.is-selected .dropdown-label,
-      .dropdown-select:focus + .dropdown-label {
-        top: -15px;
+      .dropdown-select:focus+.dropdown-label {
+        top: 5px;
         left: 0;
-        
+
         .mandatory-container span {
           color: var(--bs-danger, #f03a47);
         }
-        
+
         .helptext-container {
           display: inline-block;
         }
       }
     }
+
     .dropdown-select {
       width: 100%;
       border-radius: 0.25rem;
-    }
-    
-    .helptext-container {
-      pointer-events: auto;
-      display: none;
-    }
-
-    .mandatory-container {
-      pointer-events: auto;
-      span {
-        color: #333;
-      }
     }
   }
 

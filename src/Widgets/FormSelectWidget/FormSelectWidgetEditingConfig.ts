@@ -27,14 +27,20 @@ Scrivito.provideEditingConfig("FormSelectWidget", {
     linearScaleUpperLimit: { title: "Upper scale limit" },
     linearScaleLowerLabel: { title: "Optional label for lower scale limit" },
     linearScaleUpperLabel: { title: "Optional label for upper scale limit" },
-    clearSelectionText: { title: "Clear selection text" },
+    clearSelectionButtonText: { title: "Clear selection button text" },
     inlineView: {
       title: "Arrange items horizontally",
       description: "When enabled, all items will be displayed in a single row."
     },
-    navigateOnClick: { title: "Navigate on click" },
-    showClearSelectionText: { title: "Show the clear selection text" },
-    useFloatingLabel: { title: "Enable Floating Label" }
+    useFloatingLabel: {
+      title: "Enable floating label",
+      description: "Places the label inside the dropdown."
+    },
+    navigateOnClick: {
+      title: "Navigate on click",
+      description: "Automatically navigate to the next step when an item is clicked."
+    },
+    showClearSelectionButton: { title: "Show the clear selection button" }
   },
   properties: widget => {
     return getProperties(widget as unknown as Scrivito.Widget);
@@ -46,11 +52,11 @@ Scrivito.provideEditingConfig("FormSelectWidget", {
     customFieldName: "custom_",
     linearScaleLowerLimit: "1",
     linearScaleUpperLimit: "5",
-    clearSelectionText: "Clear selection",
+    clearSelectionButtonText: "Clear selection",
     inlineView: false,
+    useFloatingLabel: false,
     navigateOnClick: false,
-    showClearSelectionText: true,
-    useFloatingLabel: false
+    showClearSelectionButton: true
   },
   validations: [
     insideFormContainerValidation,
@@ -73,16 +79,11 @@ Scrivito.provideEditingConfig("FormSelectWidget", {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getProperties(widget: Scrivito.Widget): any[] {
   const type = widget.get("selectionType");
-  const isSingleStep = widget.container()?.get("isSingleStep")
-
   const props = [
     "selectionType",
     "title",
     "customFieldName",
     ["required", { enabled: type !== "multi" }],
-    ["navigateOnClick", { enabled: type == "radio" && isSingleStep == false }],
-    ["useFloatingLabel", { enabled: type == "dropdown" }],
-    "showClearSelectionText",
     "helpText"
   ];
   // show/hide inlineView
@@ -91,11 +92,11 @@ function getProperties(widget: Scrivito.Widget): any[] {
   }
   // show/hide items
   if (type != "linear-scale") {
-    props.splice(2, 0, "items");
+    props.splice(3, 0, "items");
   } else {
     // show/hide linear scale props
     props.splice(
-      2,
+      3,
       0,
       "linearScaleLowerLimit",
       "linearScaleUpperLimit",
@@ -103,9 +104,21 @@ function getProperties(widget: Scrivito.Widget): any[] {
       "linearScaleUpperLabel"
     );
   }
-  // show/hide clearSelectionText
-  if (!widget.get("required") && (type == "linear-scale" || type == "radio")) {
-    props.splice(props.length - 1, 0, "clearSelectionText");
+  // show/hide useFloatingLabel
+  if (type == "dropdown") {
+    props.splice(props.length - 2, 0, "useFloatingLabel");
+  }
+  // show/hide navigateOnClick
+  if (type == "radio" && !widget.container()?.get("isSingleStep")) {
+    props.splice(4, 0, "navigateOnClick");
+  }
+  // show/hide showClearSelectionButton
+  if (!widget.get("required") && (type == "radio" || type == "linear-scale")) {
+    props.splice(props.length - 2, 0, "showClearSelectionButton");
+  }
+  // show/hide clearSelectionButtonText
+  if (!widget.get("required") && (type == "linear-scale" || type == "radio") && widget.get("showClearSelectionButton")) {
+    props.splice(props.length - 2, 0, "clearSelectionButtonText");
   }
   return props;
 }

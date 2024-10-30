@@ -1,29 +1,51 @@
-.form-input-container {
-width: 100%;
-position: relative;
-	    // TODO: Adjust padding/margin top for floated label  (maybe pt-3 instead of mb-3?)
-	//TODO Check textarea
-			&.floating-label {
-				.input-label {
-					position: absolute;
-					top: 4px;
-					left: 0.75rem;
-				//	transform: translateY(-50%);
-					transition: all 0.2s ease;
-					pointer-events: none;
+.scrivito-neoletter-form-widgets {
+
+	.form-input-container {
+		width: 100%;
+		position: relative;
+		.input-label {
+			p {
+				display: inline;
+			}
+		}
+
+		&.floating-label {
+			min-height: 65px;
+			padding-top: 1.25rem;
+
+			.input-label {
+				position: absolute;
+				top: 26px;
+				left: 0.75rem;
+				transition: all 0.2s ease;
+				pointer-events: none;
+			}
+
+			&.is-selected .input-label {
+				top: -7px;
+				left: 0;
+
+				.mandatory-container span {
+					color: var(--bs-danger, #f03a47);
 				}
-				
-				&.is-selected .input-label {
-					top: -25px;
-					left: 0;
-					
-					.mandatory-container span {
-						color: var(--bs-danger, #f03a47);
-					}
-					
-					.helptext-container {
-						display: inline-block;
-					}
+
+				.helptext-container {
+					display: inline-block;
 				}
 			}
+
+			.helptext-container {
+				pointer-events: auto;
+				display: none;
+			}
+
+			.mandatory-container {
+				pointer-events: auto;
+
+				span {
+					color: #333;
+				}
+			}
+		}
+	}
 }

@@ -3,37 +3,53 @@ import * as Scrivito from "scrivito";
 import { DropdownOption } from "./DropdownOption";
 import { Mandatory } from "./MandatoryComponent";
 import { HelpText } from "./HelpTextComponent";
+import { getFieldName } from "../utils/getFieldName";
 
 interface DropdownProps {
   options: string[];
   name: string;
   useFloatingLabel: boolean;
   widget: Scrivito.Widget;
+  required: boolean;
+  helptext: string;
+  title: string;
+  onInputChange: (fieldName: string, value: string) => void;
 }
 
 export const Dropdown: React.FC<DropdownProps> = ({
   options,
   name,
   useFloatingLabel,
-  widget
+  widget,
+  required,
+  helptext,
+  title,
+  onInputChange
 }) => {
   const id = widget.id();
-  const required = widget.get("required") as boolean;
+
   const [isSelected, setIsSelected] = React.useState(false);
 
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setIsSelected(event.target.value !== "");
+    onInputChange(getFieldName(widget), event.target.value);
   };
 
   return (
     <div className={`dropdown-wrapper ${useFloatingLabel ? 'floating-label' : ''} ${isSelected ? "is-selected" : ""}`}>
-      <label htmlFor={id} className="dropdown-label">
-        {widget.get("title") as string} {required && <Mandatory />}
-        {widget.get("helpText") && <HelpText widget={widget} />}
+      {title && <label htmlFor={id} className="dropdown-label">
+        <Scrivito.ContentTag
+          attribute="title"
+          content={widget}
+          tag="span"
+        />
+        {required && <Mandatory />}
+        {helptext && <HelpText widget={widget} />}
       </label>
+      }
       <select
-        className="dropdown-select"
+        className="dropdown-select form-select form-control"
         name={name}
         id={id}
         required={required}

@@ -1,27 +1,57 @@
 import * as React from "react";
+import * as Scrivito from "scrivito";
 
 interface FormSubmissionFailedProps {
   submissionFailureText: string;
-  //TODO: Fix this for legacy form
-  onReSubmit?: () => Promise<void>;
-  hidden: boolean;
+  type: string;
+  widget: Scrivito.Widget;
   retryButtonText: string;
+  showRetryButton: boolean;
+  buttonAlignment: string;
+  onReSubmit: React.MouseEventHandler;
 }
+//TODO: Use OWN text-center styles
 export const FormSubmissionFailed: React.FC<FormSubmissionFailedProps> = ({
   submissionFailureText,
-  onReSubmit,
-  hidden,
-  retryButtonText
+  type,
+  widget,
+  retryButtonText,
+  showRetryButton,
+  buttonAlignment,
+  onReSubmit
 }) => {
   return (
-    <div hidden={hidden} className="scrivito-neoletter-form-widgets form-container-widget text-center full-width">
-      <i
-        className="bi bi-exclamation-triangle-fill bi-5x"
-        aria-hidden="true"></i>{" "}
-      <h5 className="text-super submission-failed-text">{submissionFailureText}</h5>
-      <div>
-        <button className="btn btn-primary retry-button" onClick={onReSubmit}>{retryButtonText}</button>
-      </div>
+    <div className="form-submission-failed">
+      {type == "default" ?
+        <div className="text-center">
+          <i
+            className="bi bi-exclamation-triangle-fill bi-2x"
+            aria-hidden="true"></i>{" "}
+          <span >{submissionFailureText}</span>
+        </div>
+        :
+        <Scrivito.ContentTag
+          content={widget}
+          attribute={"failedMessageWidgets"}
+        />
+      }
+      {showRetryButton &&
+        <div
+          className={`${buttonAlignment === "block"
+            ? ""
+            : buttonAlignment
+            }`}>
+          <button
+            className={`btn btn-primary retry-button ${buttonAlignment === "block"
+              ? " btn-block"
+              : ""
+              }`}
+            onClick={onReSubmit}
+          >
+            {retryButtonText}
+          </button>
+        </div>
+      }
     </div>
   );
 };
