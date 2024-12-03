@@ -108,6 +108,15 @@ module.exports = (_env, argv) => {
               }
             }
           ]
+        },
+        {
+          test: /\.css$/,
+          use: [
+            argv.mode === "production"
+              ? MiniCssExtractPlugin.loader
+              : "style-loader",
+            "css-loader"
+          ]
         }
       ]
     },
