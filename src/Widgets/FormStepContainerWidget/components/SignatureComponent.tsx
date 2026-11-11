@@ -1,5 +1,6 @@
 import React from "react";
 import { useSignatureCanvas } from "./hooks/useSignatureCanvas";
+import { useFormAttributesContext } from "../FormAttributesContext";
 
 interface SignatureProps {
 	id: string;
@@ -12,6 +13,7 @@ interface SignatureProps {
 }
 
 export const Signature: React.FC<SignatureProps> = ({ id, onChange, deleteButtonText, strokeColor, strokeThickness, backgroundColor, deleteButtonAlignment }) => {
+	const { buttonsSize, buttonsStyle } = useFormAttributesContext();
 	const { canvasRef, handleDrawStart, handleDrawEnd, handleDrawMove, deleteSignature } = useSignatureCanvas(onChange, strokeThickness, strokeColor, backgroundColor);
 
 	return (
@@ -29,7 +31,7 @@ export const Signature: React.FC<SignatureProps> = ({ id, onChange, deleteButton
 				onTouchCancel={handleDrawEnd}
 			></canvas>
 			<div className={`${deleteButtonAlignment === "block" ? "" : deleteButtonAlignment}`}>
-				<button className={`delete btn btn-primary${deleteButtonAlignment === "block" ? " btn-block" : ""}`} onClick={deleteSignature}>
+				<button className={`delete btn ${buttonsStyle} ${deleteButtonAlignment === "block" ? "btn-block" : ""} ${buttonsSize}`} onClick={deleteSignature}>
 					<span className="delete-text">{deleteButtonText}</span>
 				</button>
 			</div>

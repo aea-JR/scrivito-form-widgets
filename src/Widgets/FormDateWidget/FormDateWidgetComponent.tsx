@@ -5,21 +5,41 @@ import { HelpText } from "../FormStepContainerWidget/components/HelpTextComponen
 import { Mandatory } from "../FormStepContainerWidget/components/MandatoryComponent";
 import { FormDateWidget } from "./FormDateWidgetClass";
 import { isEmpty } from "../FormStepContainerWidget/utils/lodashPolyfills";
+import { useFormContext } from "../FormStepContainerWidget/FormContext";
+import { useValidationField } from "../../FormValidation/hooks/useValidationField";
+import { MessageBlock } from "../FormStepContainerWidget/components/MessageBlock";
 import "./FormDateWidget.scss";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-Scrivito.provideComponent(FormDateWidget, ({ widget, onInputChange }: any) => {
-  const [value, setValue] = React.useState("");
-  const onChangeValue = (e: React.BaseSyntheticEvent) => {
 
+Scrivito.provideComponent(FormDateWidget, ({ widget }) => {
+  const fieldName = getFieldName(widget);
+  const [value, setValue] = React.useState("");
+  const mandatory = widget.get("required");
+  const validationText = widget.get("validationText") || "Please enter a date";
+  const alignment = widget.get("alignment") as string || "left";
+  const inputType = widget.get("dateType") as string || "date";
+
+  const ctx = useFormContext();
+  if (!ctx) {
+    return <MessageBlock type="noContext" />;
+  }
+
+  const { isLocallyValid, setIsLocallyValid, ref } = useValidationField(fieldName, mandatory);
+
+  const onChangeValue = (e: React.BaseSyntheticEvent) => {
     const isoStringDate = isEmpty(e.target.value) ? "" : new Date(e.target.value).toISOString();
+    mandatory && setIsLocallyValid(!isEmpty(isoStringDate));
     setValue(isoStringDate);
-    onInputChange(getFieldName(widget), isoStringDate);
+    ctx.onInputChange(fieldName, isoStringDate);
   };
+  const isInvalid = !isLocallyValid;
   return (
-    <div className="form-date mb-3">
+    <div
+      ref={ref}
+      className="form-date mb-3"
+    >
       {widget.get("title") &&
-        <div className="date-title">
+        <div className={`date-title ${alignment}`} >
           <Scrivito.ContentTag
             attribute="title"
             content={widget}
@@ -31,14 +51,19 @@ Scrivito.provideComponent(FormDateWidget, ({ widget, onInputChange }: any) => {
       }
       <input
         onChange={onChangeValue}
-        className="datepicker"
-        type={widget.get("dateType")!}
-        required={widget.get("required")}></input>
+        className={`datepicker form-control ${isInvalid ? "is-invalid" : ""} ${alignment}`}
+        type={inputType}
+      />
       <input
         type="hidden"
         className="show-in-review"
         name={getFieldName(widget)}
-        value={value}></input>
+        value={value} />
+      {
+        isInvalid && <div className={`invalid-feedback ${alignment}`}>
+          {validationText}
+        </div>
+      }
     </div>
   );
 });

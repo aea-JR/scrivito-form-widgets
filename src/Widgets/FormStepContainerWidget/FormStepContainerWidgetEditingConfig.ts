@@ -9,12 +9,12 @@ import { FormIdComponent } from "./components/FormIdComponent";
 import { isEmpty } from "./utils/lodashPolyfills";
 
 Scrivito.provideEditingConfig("FormStepContainerWidget", {
-  title: "Neoletter Form",
+  title: "Automations Form",
   thumbnail: formContainerWidgetIcon,
   attributes: {
     formId: {
       title: "Form ID",
-      description: "This ID identifies the form in Neoletter."
+      description: "This ID identifies the form in Automations."
     },
     customClassNames: {
       title: "Additional CSS Classes",
@@ -39,7 +39,7 @@ Scrivito.provideEditingConfig("FormStepContainerWidget", {
     friendlyCaptchaLanguage: {
       title: "Language",
       description:
-        "Defaults to English. Changes are applied after refreshing the page."
+        "Leave empty to use the default language: English for v1, automatic website language detection for v2."
     },
     captchaAlignment: {
       title: "Alignment",
@@ -50,13 +50,13 @@ Scrivito.provideEditingConfig("FormStepContainerWidget", {
       ]
     },
     friendlyCaptchaStartMode: {
-      title: "Start verification",
+      title: "Start solving",
       description:
-        "Specify when the captcha should start the verification process.",
+        "Controls when challenge solving starts. For v2, whether completion requires a click is configured separately under Widget Mode in the Friendly Captcha dashboard.",
       values: [
         { value: "none", title: "After clicking the captcha" },
         { value: "auto", title: "When the form is ready" },
-        { value: "focus", title: "After clicking a form field" }
+        { value: "focus", title: "When a form field receives focus" }
       ]
     },
     submittingMessage: {
@@ -123,8 +123,7 @@ Scrivito.provideEditingConfig("FormStepContainerWidget", {
       values: [
         { value: "left", title: "Left" },
         { value: "text-center", title: "Center" },
-        { value: "text-end", title: "Right" },
-        { value: "block", title: "Full width" }
+        { value: "text-end", title: "Right" }
       ]
     },
 
@@ -212,6 +211,16 @@ Scrivito.provideEditingConfig("FormStepContainerWidget", {
       title: "Scrollbar width",
       description: 'The width of the scrollbar. "None" will hide the scrollbar.',
       values: [{ value: "default", title: "Default" }, { value: "thin", title: "Thin" }, { value: "none", title: "None" }]
+    },
+    buttonsSize: {
+      title: "Buttons size",
+      description: "Default: Medium",
+      values: [{ value: "btn-sm", title: "Small" }, { value: "btn-md", title: "Medium" }, { value: "btn-lg", title: "Large" }]
+    },
+    buttonsStyle: {
+      title: "Buttons style",
+
+      values: [{ value: "btn-primary", title: "Primary" }, { value: "btn-secondary", title: "Secondary" }]
     }
   },
   properties: (widget) => {
@@ -220,6 +229,8 @@ Scrivito.provideEditingConfig("FormStepContainerWidget", {
     return [
       "showBorder",
       "customClassNames",
+      "buttonsSize",
+      "buttonsStyle",
       "fixedFormHeight",
       ["formHeight", { enabled: useFixedHeight }],
       ["scrollbarWidth", { enabled: useFixedHeight }],
@@ -228,11 +239,17 @@ Scrivito.provideEditingConfig("FormStepContainerWidget", {
     ] as any;
   },
   propertiesGroups: (widget) => {
-    const showSubmittingMessage = widget.get("submittingMessageType") == "default";
-    const showSubmittedMessage = widget.get("submittedMessageType") == "default";
-    const showFailedMessage = widget.get("failedMessageType") == "default";
+    const showSubmittingMessage = widget.get("submittingMessageType") !== "widget-list";
+    const showSubmittedMessage = widget.get("submittedMessageType") !== "widget-list";
+    const showFailedMessage = widget.get("failedMessageType") !== "widget-list";
     const showRetryButton = widget.get("showRetryButton");
+    const { siteKey, captchaType } = getCaptchaOptions();
     const groups = [
+      {
+        title: "Steps",
+        key: "FormSteps",
+        properties: ["steps"]
+      },
       {
         title: "Hidden fields",
         key: "FormStepContainerWidgetHiddenFields",
@@ -274,25 +291,21 @@ Scrivito.provideEditingConfig("FormStepContainerWidget", {
         1,
         0,
         {
-          title: "Steps",
-          key: "FormSteps",
-          properties: ["steps"]
-        },
-        {
           title: "Review",
           key: "FormReview",
           properties: getReviewProperties(widget)
         }
       );
     if (
-      !isEmpty(getCaptchaOptions().captchaType) &&
-      !isEmpty(getCaptchaOptions().siteKey)
+      !isEmpty(captchaType) &&
+      !isEmpty(siteKey) &&
+      captchaType !== "google-recaptcha-v3"
     ) {
       groups.splice(0, 0, {
         title:
-          getCaptchaOptions().captchaType == "friendly-captcha"
+          (captchaType == "friendly-captcha" || captchaType == "friendly-captcha-v2")
             ? "Friendly Captcha"
-            : "Google reCAPTCHA",
+            : "Google reCAPTCHA V2",
         key: "FormStepContainerWidgetCaptcha",
         properties: getCaptchaProperties(widget)
       });
@@ -377,12 +390,14 @@ Scrivito.provideEditingConfig("FormStepContainerWidget", {
     previewFailedMessage: false,
     showRetryButton: false,
     retryButtonText: "Retry",
-    retryButtonAlignment: "text-center"
+    retryButtonAlignment: "text-center",
+    buttonsSize: "btn-md",
+    buttonsStyle: "btn-primary"
   },
   validations: [
     (widget: Scrivito.Widget) => {
       if (getFormContainer(widget)) {
-        return "Needs to be outside of a Neoletter form.";
+        return "Needs to be outside of a Automations form.";
       }
     },
     (widget: Scrivito.Widget) => {
@@ -396,34 +411,6 @@ Scrivito.provideEditingConfig("FormStepContainerWidget", {
         return "No instanceId specified for form widgets.";
       }
     },
-
-    [
-      "submittingMessage",
-      (submittingMessage) => {
-        if (!submittingMessage) {
-          return "Specify the message to be displayed during form submission.";
-        }
-      }
-    ],
-
-    [
-      "submittedMessage",
-      (submittedMessage) => {
-        if (!submittedMessage) {
-          return "Specify the message to be displayed after successful form submission.";
-        }
-      }
-    ],
-
-    [
-      "failedMessage",
-      (failedMessage) => {
-        if (!failedMessage) {
-          return "Specify the message to be displayed after form submission failed.";
-        }
-      }
-    ],
-
     [
       "formId",
       (formId: string) => {
@@ -482,16 +469,18 @@ function getReviewProperties(widget: Scrivito.Widget): string[] | any[] {
   return widget.get("showReview") ? reviewPropsEnabled : reviewPropsDisabled;
 }
 function getCaptchaProperties(widget: Scrivito.Widget): string[] {
+  const { captchaType } = getCaptchaOptions();
+  const isFriendlyCaptcha = captchaType === "friendly-captcha" || captchaType === "friendly-captcha-v2";
   const captchaPropsDisabled = ["showCaptcha"];
   const captchaPropsEnabled = [
     "showCaptcha",
-    getCaptchaOptions().captchaType == "friendly-captcha"
+    isFriendlyCaptcha
       ? "friendlyCaptchaLanguage"
       : "googleRecaptchaLanguage",
     "captchaTheme",
     "captchaAlignment"
   ];
-  if (getCaptchaOptions().captchaType == "friendly-captcha") {
+  if (isFriendlyCaptcha) {
     captchaPropsEnabled.splice(2, 0, "friendlyCaptchaStartMode");
   }
   return widget.get("showCaptcha") ? captchaPropsEnabled : captchaPropsDisabled;

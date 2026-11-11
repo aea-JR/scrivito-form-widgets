@@ -4,8 +4,9 @@ import { isCustomType } from "../FormStepContainerWidget/utils/isCustomType";
 import { customFieldNameValidation } from "../FormStepContainerWidget/utils/validations/customFieldNameValidation";
 import { typeValidation } from "../FormStepContainerWidget/utils/validations/typeValidation";
 import { insideFormContainerValidation } from "../FormStepContainerWidget/utils/validations/insideFormContainerValidation";
+
 Scrivito.provideEditingConfig("FormCheckboxWidget", {
-  title: "Neoletter Form Checkbox",
+  title: "Automations Form Checkbox",
   thumbnail: formCheckboxWidgetIcon,
   attributes: {
     required: { title: "Mandatory" },
@@ -18,16 +19,26 @@ Scrivito.provideEditingConfig("FormCheckboxWidget", {
       ]
     },
     customFieldName: { title: "Field name" },
-    helpText: { title: "Help text" }
+    helpText: { title: "Help text" },
+    validationText: {
+      title: "Validation Message",
+      description: "This message appears when the input is invalid."
+    },
+    alignment: {
+      title: "Alignment",
+    },
   },
-  properties: (widget: Scrivito.Widget) =>
+  properties: (widget: Scrivito.Widget): any =>
     isCustomType(widget)
-      ? ["type", "customFieldName", "label", "required", "helpText"]
-      : ["type", "label", "required", "helpText"],
+      ? ["type", "customFieldName", "label", "alignment", "required", ["validationText", { enabled: widget.get("required") }], "helpText"]
+      : ["type", "label", "alignment", "required", ["validationText", { enabled: widget.get("required") }], "helpText"],
   initialContent: {
     type: "custom",
     customFieldName: "custom_checkbox",
-    label: "Please send me your free printed product catalog."
+    label: "Please send me your free printed product catalog.",
+    validationText: "Please tick the box",
+    alignment: "left",
+
   },
   validations: [
     insideFormContainerValidation,

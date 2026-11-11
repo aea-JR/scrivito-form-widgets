@@ -4,10 +4,13 @@ import { insideFormContainerValidation } from "../FormStepContainerWidget/utils/
 import formSignatureWidgetIcon from "../../assets/images/form-signature-widget.svg";
 
 Scrivito.provideEditingConfig("FormSignatureWidget", {
-  title: "Neoletter Form Signature",
+  title: "Automations Form Signature",
   thumbnail: formSignatureWidgetIcon,
   attributes: {
     title: { title: "Label" },
+    alignment: {
+      title: "Alignment",
+    },
     customFieldName: { title: "Field name" },
     strokeThickness: { title: "Stroke thickness", description: 'Default: "2"' },
     strokeColor: { title: "Stroke color", description: 'Default: "black"' },
@@ -24,15 +27,16 @@ Scrivito.provideEditingConfig("FormSignatureWidget", {
     },
     helpText: { title: "Help text" }
   },
-  properties: ["title", "customFieldName", "strokeThickness", "strokeColor", "backgroundColor", "deleteButtonText", "deleteButtonAlignment", "helpText"],
+  properties: ["title", "alignment", "customFieldName", "strokeThickness", "strokeColor", "backgroundColor", "deleteButtonText", "deleteButtonAlignment", "helpText"],
   initialContent: {
     title: "Sign here",
+    alignment: "left",
     customFieldName: "custom_",
     deleteButtonText: "Delete",
     strokeThickness: 2,
     strokeColor: "black",
     backgroundColor: "#ffffff",
-    deleteButtonAlignment: "left"
+    deleteButtonAlignment: "left",
 
   },
   validations: [insideFormContainerValidation, customFieldNameValidation]

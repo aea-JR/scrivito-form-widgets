@@ -1,21 +1,24 @@
 import * as React from "react";
 import * as Scrivito from "scrivito";
+import { useFormAttributesContext } from "../FormAttributesContext";
 
 interface FormSubmissionSucceededProps {
-  submissionSuccessText: string;
-  type: string;
-  widget: Scrivito.Widget
+  widget: Scrivito.Widget;
+  fixedFormHeight: boolean;
+  formHeight: number;
+  getClassNames: () => string;
 }
 
 export const FormSubmissionSucceeded: React.FC<
   FormSubmissionSucceededProps
-> = ({ submissionSuccessText, type, widget }) => {
+> = ({ widget, fixedFormHeight, formHeight, getClassNames }) => {
+  const { submittedMessage, submittedMessageType } = useFormAttributesContext()
   return (
-    <div className="form-submission-succeeded">
-      {type == "default" ?
+    <div className={`form-submission-succeeded ${getClassNames()}`} style={fixedFormHeight ? { height: `${formHeight}px` } : {}}>
+      {submittedMessageType == "default" ?
         <div className="text-center">
           <i className="bi bi-check-lg bi-2x" aria-hidden="true"></i>{" "}
-          <span>{submissionSuccessText}</span>
+          <span>{submittedMessage}</span>
         </div>
         :
         <Scrivito.ContentTag
@@ -23,6 +26,6 @@ export const FormSubmissionSucceeded: React.FC<
           attribute={"submittedMessageWidgets"}
         />
       }
-    </div>
+    </div >
   );
 };

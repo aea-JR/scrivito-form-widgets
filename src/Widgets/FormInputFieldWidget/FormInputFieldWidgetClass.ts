@@ -1,10 +1,16 @@
 import * as Scrivito from "scrivito";
+import { defaultInputTypes } from "../FormStepContainerWidget/utils/formConstants";
 
 export const FormInputFieldWidget = Scrivito.provideWidgetClass(
   "FormInputFieldWidget",
   {
     attributes: {
       label: "html",
+      alignment: [
+        "enum", {
+          values: ["left", "center", "right"]
+        }
+      ],
       placeholder: "string",
       required: "boolean",
       helpText: "html",
@@ -12,20 +18,16 @@ export const FormInputFieldWidget = Scrivito.provideWidgetClass(
         "enum",
         {
           values: [
-            "email",
-            "name",
-            "given_name",
-            "family_name",
-            "middle_name",
-            "company",
-            "phone_number",
+            ...defaultInputTypes,
             "custom"
           ]
         }
       ],
       customType: ["enum", { values: ["single_line", "multi_line"] }],
       customFieldName: "string",
-      useFloatingLabel: "boolean"
+      useFloatingLabel: "boolean",
+      useUserCredentials: "boolean",
+      validationText: "string"
     }
   }
 );

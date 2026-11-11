@@ -8,9 +8,9 @@ import { insideFormContainerValidation } from "../FormStepContainerWidget/utils/
 import { FormRatingWidget } from "../FormRatingWidget/FormRatingWidgetClass";
 import formConditionContainerWidgetIcon from "../../assets/images/form_widget_condition_container.svg";
 Scrivito.provideEditingConfig("FormConditionalContainerWidget", {
-  title: "Neoletter Form Conditional Container",
+  title: "Automations Form Conditional Group",
   titleForContent(widget) {
-    return "Container for: " + widget.get("title");
+    return "Conditional group for: " + widget.get("title");
   },
   thumbnail: formConditionContainerWidgetIcon,
   attributes: {
@@ -23,22 +23,45 @@ Scrivito.provideEditingConfig("FormConditionalContainerWidget", {
     },
     title: { title: "Label" },
     customFieldName: { title: "Field name" },
+    validationText: {
+      title: "Validation Message",
+      description: "This message appears when the input is invalid."
+    },
     required: { title: "Mandatory" },
     helpText: { title: "Help text" },
     conditions: {
       title: "Conditions"
-    }
+    },
+    alignment: {
+      title: "Alignment",
+    },
+    inlineView: {
+      title: "Arrange items horizontally",
+      description: "When enabled, all items will be displayed in a single row."
+    },
   },
-  properties: [
-    "headerType",
-    "title",
-    "conditions",
-    "customFieldName",
-    "required",
-    "helpText"
-  ],
+  properties: (widget) => {
+    const type = widget.get("headerType") as string;
+    const inlineView = widget.get("inlineView") as string;
+    const enableAlignment = (type == "radio" && inlineView);
+    const props = [
+      "headerType",
+      "title",
+      "conditions",
+      "customFieldName",
+      "required",
+      "helpText",
+      ["validationText", { enabled: widget.get("required") }] as any,
+    ];
+    if (type == "radio") {
+      props.splice(2, 0, "inlineView", ["alignment", { enabled: enableAlignment }]);
+    }
+    return props;
+  },
   initialContent: {
     headerType: "radio",
+    alignment: "left",
+    inlineView: false,
     title: "Select the reason for your request",
     customFieldName: "custom_request_reason",
     conditions: [

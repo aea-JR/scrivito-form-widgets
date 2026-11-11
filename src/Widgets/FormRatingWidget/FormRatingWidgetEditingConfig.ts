@@ -1,15 +1,18 @@
 import * as Scrivito from "scrivito";
 import { customFieldNameValidation } from "../FormStepContainerWidget/utils/validations/customFieldNameValidation";
 import { insideFormContainerValidation } from "../FormStepContainerWidget/utils/validations/insideFormContainerValidation";
+import { ScrivitoBootstrapIconEditor } from 'scrivito-icon-editor';
+
 import formContainerWidgetIcon from "../../assets/images/form_widget_rating.svg";
-import 'scrivito-icon-editor/ScrivitoIconEditor.css'
-import { ScrivitoBootstrapIconEditor } from 'scrivito-icon-editor'
 
 Scrivito.provideEditingConfig("FormRatingWidget", {
-  title: "Neoletter Form Rating",
+  title: "Automations Form Rating",
   thumbnail: formContainerWidgetIcon,
   attributes: {
     title: { title: "Label" },
+    alignment: {
+      title: "Alignment",
+    },
     customFieldName: { title: "Field name" },
     helpText: { title: "Help text" },
     hoverEffect: {
@@ -40,7 +43,7 @@ Scrivito.provideEditingConfig("FormRatingWidget", {
     },
     customColor: { title: "Custom Hex Color" }
   },
-  properties: ["title", "customFieldName", "helpText"],
+  properties: ["title", "alignment", "customFieldName", "helpText"],
   propertiesGroups: (widget: Scrivito.Widget) => {
     return [
       {
@@ -58,6 +61,7 @@ Scrivito.provideEditingConfig("FormRatingWidget", {
   },
   initialContent: {
     title: "Please leave your rating",
+    alignment: "left",
     customFieldName: "custom_",
     colorType: "default",
     customColor: "#ffd700",

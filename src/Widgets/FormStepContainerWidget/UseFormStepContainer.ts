@@ -1,46 +1,35 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { isInPlaceEditingActive, Widget } from "scrivito";
 import { StringMap } from "../../../types/types";
 import { getFormData, submitForm } from "./utils/submitForm";
 import { scrollIntoView } from "./utils/scrollIntoView";
+import { useValidationContext } from "../../FormValidation/ValidationContext";
+import { useCaptcha } from "./CaptchaContext";
+import { getCaptchaOptions } from "../../config/scrivitoConfig";
+import { useFormAttributesContext } from "./FormAttributesContext";
 
 export const useFormStepContainer = (widget: Widget, tenant: string) => {
   const [currentStep, setCurrentStepNumber] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successfullySent, setSuccessfullySent] = useState(false);
   const [submissionFailed, setSubmissionFailed] = useState(false);
-  const [reCaptchaToken, setReCaptchaToken] = useState<string | null>(null);
   const [formData, setFormData] = useState({});
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
+  const [totalFormHeight, setTotalFormHeight] = useState<number | null>(null);
 
-  const stepsLength = (widget.get("steps") as Widget[]).length;
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { formType, steps, showCaptcha, fixedFormHeight, formId, formOverscrollBehavior, formScrollbarWidth, showFailedPreview, showSubmittedPreview, showSubmittingPreview } = useFormAttributesContext();
+  const stepsLength = steps.length;
   const isLastPage = currentStep === stepsLength;
-  const isSingleStep = widget.get("formType") === "single-step";
-  const showCaptcha = widget.get("showCaptcha");
-  const formId = widget.get("formId") as string;
-  const showSubmittingPreview = widget.get("previewSubmittingMessage") || false;
-  const showSubmittedPreview = widget.get("previewSubmittedMessage") || false;
-  const showFailedPreview = widget.get("previewFailedMessage") || false;
+  const isSingleStep = formType === "single-step";
 
-  const fixedFormHeight = widget.get("fixedFormHeight") || false;
-  const formScrollbarWidth = widget.get("scrollbarWidth");
-  const formOverscrollBehavior = widget.get("overscrollBehavior");
 
-  useEffect(() => {
-    if (!isInPlaceEditingActive()) {
-      return;
-    }
-    // update some properties for older forms if they are not set!
-    if (!widget.get("submittingMessageType")) {
-      widget.update({ "submittingMessageType": "default" });
-    }
-    if (!widget.get("submittedMessageType")) {
-      widget.update({ "submittedMessageType": "default" });
-    }
-    if (!widget.get("failedMessageType")) {
-      widget.update({ "failedMessageType": "default" });
-    }
-  }, []);
+  const { validate } = useValidationContext();
+  const { captchaType } = getCaptchaOptions();
+  const {
+    triggerCaptcha,
+    isCaptchaResolved
+  } = useCaptcha();
 
   useEffect(() => {
     if (!isInPlaceEditingActive()) {
@@ -64,7 +53,6 @@ export const useFormStepContainer = (widget: Widget, tenant: string) => {
       return;
     }
     // in order to show step number in the props title of each step
-    const steps = widget.get("steps") as Widget[];
     steps.forEach((step, i) => {
       const stepNumber = i + 1;
       step.update({
@@ -77,14 +65,39 @@ export const useFormStepContainer = (widget: Widget, tenant: string) => {
     } else if (stepsLength == 1 && !isSingleStep) {
       widget.update({ formType: "single-step" });
     }
-  }, [widget.get("steps")]);
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [steps]);
 
   useEffect(() => {
-    if (showCaptcha && isLastPage) {
-      setIsSubmitDisabled(reCaptchaToken == null);
+    if (fixedFormHeight && containerRef.current) {
+      const containerRect = containerRef.current.getBoundingClientRect();
+      setTotalFormHeight(containerRect.height);
     }
-  }, [reCaptchaToken, showCaptcha, isLastPage]);
+  }, [fixedFormHeight]);
+
+  useEffect(() => {
+    if (captchaType == "google-recaptcha-v3") {
+      setIsSubmitDisabled(false);
+    } else if (showCaptcha && isLastPage) {
+      setIsSubmitDisabled(!isCaptchaResolved);
+    }
+  }, [isCaptchaResolved, showCaptcha, isLastPage]);
+
+  const getStepInfo = (stepId: string) => {
+    let isActive = false;
+    let stepNumber = 0;
+
+    steps.some((step: Widget, index: number) => {
+      if (step.id() === stepId) {
+        stepNumber = index + 1;
+        isActive = stepNumber === currentStep;
+        return true;
+      }
+      return false;
+    });
+
+    return { stepNumber, isActive, isSingleStep };
+  };
 
   const handleInputChange = (fieldUpdates: StringMap<string> | string, value?: string) => {
     if (typeof fieldUpdates === "string") {
@@ -104,7 +117,7 @@ export const useFormStepContainer = (widget: Widget, tenant: string) => {
     if (!formData) {
       return;
     }
-    if (isInPlaceEditingActive() && widget.get("formType") == "multi-step") {
+    if (isInPlaceEditingActive() && formType == "multi-step") {
       // eslint-disable-next-line no-console
       console.log("In edit mode, only the first step will be validated for mandatory fields.");
     }
@@ -118,6 +131,13 @@ export const useFormStepContainer = (widget: Widget, tenant: string) => {
     indicateProgress();
     try {
       const completeFormData = Object.fromEntries(getFormData(widget)!);
+
+      if (captchaType === "google-recaptcha-v3") {
+        const token = await triggerCaptcha();
+        // Inject v3 captcha token manually
+        completeFormData["g-recaptcha-response"] = token;
+      }
+
       setFormData(completeFormData);
       await submitForm(completeFormData as StringMap<string>, tenant);
       indicateSuccess();
@@ -170,7 +190,7 @@ export const useFormStepContainer = (widget: Widget, tenant: string) => {
   };
 
   const validateCurrentStep = (): boolean => {
-    return doValidate(formId, currentStep);
+    return validate(formId, currentStep);
   };
 
   const getFormClassNames = () => {
@@ -197,9 +217,14 @@ export const useFormStepContainer = (widget: Widget, tenant: string) => {
     isSubmitting,
     successfullySent,
     submissionFailed,
-    setReCaptchaToken,
+    totalFormHeight,
+    containerRef,
     isSubmitDisabled,
+    showFailedPreview,
+    showSubmittedPreview,
+    showSubmittingPreview,
     handleInputChange,
+    getStepInfo,
     onSubmit,
     onPageChange,
     indicateProgress,
@@ -208,22 +233,3 @@ export const useFormStepContainer = (widget: Widget, tenant: string) => {
     getFormClassNames
   };
 };
-
-function doValidate(formId: string, currentStep: number): boolean {
-  let isValid = true;
-  const form = document.getElementById(formId);
-  if (form) {
-    const step = form.querySelector(`[data-step-number='${currentStep}']`);
-    if (step) {
-      const allInputs: NodeListOf<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> =
-        step.querySelectorAll("input, select, textarea") || [];
-      for (const node of allInputs.values()) {
-        if (!node.checkValidity()) {
-          node.reportValidity();
-          return (isValid = false);
-        }
-      }
-    }
-  }
-  return isValid;
-}

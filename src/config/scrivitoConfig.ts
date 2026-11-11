@@ -3,7 +3,18 @@ import * as Scrivito from "scrivito";
 import { CaptchaOptions, Options } from "../../types/types";
 import { isEmpty } from "../Widgets/FormStepContainerWidget/utils/lodashPolyfills";
 
-const GLOBAL_OBJ = typeof window !== 'undefined' ? window : global;
+declare const require: {
+	context: (
+		directory: string,
+		useSubdirectories: boolean,
+		regExp: RegExp
+	) => {
+		(key: string): unknown;
+		keys: () => string[];
+	};
+};
+
+const GLOBAL_OBJ = (typeof window !== "undefined" ? window : globalThis) as typeof globalThis & Record<string, unknown>;
 
 export const initNeoletterFormWidgets = (
 	options?: Options
@@ -17,7 +28,7 @@ export const initNeoletterFormWidgets = (
 		: { siteKey: "", captchaType: null };
 
 	(GLOBAL_OBJ as any).tracking = options?.tracking || false
-	
+
 	loadWidgets();
 	attachCaptchaScript();
 };
@@ -39,15 +50,19 @@ export const isTrackingEnabled = () => {
 }
 
 function loadWidgets(): void {
-	if (isEmpty(import.meta)) {
+	try {
 		const widgetImportsContext = require.context(
 			"../Widgets",
 			true,
 			/Widget(Class|Component)\.tsx?$/
 		);
 		widgetImportsContext.keys().forEach(widgetImportsContext);
-	} else {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		return;
+	} catch (_error) {
+		// Continue with the Vite loader below.
+	}
+
+	if (typeof (import.meta as any).glob === "function") {
 		(import.meta as any).glob(
 			["../Widgets/**/*WidgetClass.ts", "../Widgets/**/*WidgetComponent.tsx"],
 			{
@@ -58,13 +73,22 @@ function loadWidgets(): void {
 }
 
 function attachCaptchaScript() {
-	if (isEmpty(getCaptchaOptions().siteKey)) {
-		return;
-	}
-	if (getCaptchaOptions().captchaType == "friendly-captcha") {
-		attachFriendlyCaptchaScript();
-	} else {
-		attachGoogleRecaptchaScript();
+	if (typeof window === "undefined") return;
+
+	const { captchaType, siteKey } = getCaptchaOptions();
+	if (isEmpty(siteKey)) return;
+
+	switch (captchaType) {
+		case "friendly-captcha":
+			attachFriendlyCaptchaScript();
+			break;
+		case "google-recaptcha-v2":
+		case "google-recaptcha":
+			attachGoogleRecaptchaV2Script();
+			break;
+		case "google-recaptcha-v3":
+			// attached elsewhere to avoid attaching it in all iFrames.
+			break;
 	}
 }
 
@@ -84,8 +108,7 @@ const attachFriendlyCaptchaScript = () => {
 	document.body.appendChild(script);
 };
 
-const attachGoogleRecaptchaScript = () => {
-	// check if the script is already attached
+const attachGoogleRecaptchaV2Script = () => {
 	const existingScript = document.querySelector(
 		'script[src^="https://www.google.com/recaptcha/api.js"]'
 	);
@@ -93,7 +116,11 @@ const attachGoogleRecaptchaScript = () => {
 		return;
 	}
 	const script = document.createElement("script");
-	script.src = `https://www.google.com/recaptcha/api.js?render=explicit`;
+	// Google invokes this once its API and dependencies are ready.
+	window.neoletterRecaptchaOnload = () => {
+		window.dispatchEvent(new Event("neoletter-recaptcha-ready"));
+	};
+	script.src = "https://www.google.com/recaptcha/api.js?onload=neoletterRecaptchaOnload&render=explicit";
 	script.async = true;
 	script.defer = true;
 	document.body.appendChild(script);

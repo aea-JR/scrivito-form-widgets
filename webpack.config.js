@@ -1,4 +1,5 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable import/no-nodejs-modules */
+/* eslint-disable import/no-commonjs */
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -104,18 +105,10 @@ module.exports = (_env, argv) => {
             {
               loader: "sass-loader",
               options: {
-                implementation: require("sass")
+                implementation: require("sass"),
+                api: "modern"
               }
             }
-          ]
-        },
-        {
-          test: /\.css$/,
-          use: [
-            argv.mode === "production"
-              ? MiniCssExtractPlugin.loader
-              : "style-loader",
-            "css-loader"
           ]
         }
       ]

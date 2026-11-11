@@ -1,33 +1,31 @@
 import * as React from "react";
 import * as Scrivito from "scrivito";
+import { useFormAttributesContext } from "../FormAttributesContext";
 
 interface FormSubmissionFailedProps {
-  submissionFailureText: string;
-  type: string;
   widget: Scrivito.Widget;
-  retryButtonText: string;
-  showRetryButton: boolean;
-  buttonAlignment: string;
+  fixedFormHeight: boolean;
+  formHeight: number;
+  getClassNames: () => string;
   onReSubmit: React.MouseEventHandler;
 }
 //TODO: Use OWN text-center styles
 export const FormSubmissionFailed: React.FC<FormSubmissionFailedProps> = ({
-  submissionFailureText,
-  type,
   widget,
-  retryButtonText,
-  showRetryButton,
-  buttonAlignment,
+  fixedFormHeight,
+  formHeight,
+  getClassNames,
   onReSubmit
 }) => {
+  const { buttonsSize, buttonsStyle, retryButtonText, showRetryButton, failedMessage, failedMessageType, retryButtonAlignment } = useFormAttributesContext();
   return (
-    <div className="form-submission-failed">
-      {type == "default" ?
+    <div className={`form-submission-failed ${getClassNames()}`} style={fixedFormHeight ? { height: `${formHeight}px` } : {}}>
+      {failedMessageType == "default" ?
         <div className="text-center">
           <i
             className="bi bi-exclamation-triangle-fill bi-2x"
             aria-hidden="true"></i>{" "}
-          <span >{submissionFailureText}</span>
+          <span >{failedMessage}</span>
         </div>
         :
         <Scrivito.ContentTag
@@ -37,13 +35,13 @@ export const FormSubmissionFailed: React.FC<FormSubmissionFailedProps> = ({
       }
       {showRetryButton &&
         <div
-          className={`${buttonAlignment === "block"
+          className={`${retryButtonAlignment === "block"
             ? ""
-            : buttonAlignment
+            : retryButtonAlignment
             }`}>
           <button
-            className={`btn btn-primary retry-button ${buttonAlignment === "block"
-              ? " btn-block"
+            className={`btn ${buttonsStyle} retry-button ${buttonsSize} ${retryButtonAlignment === "block"
+              ? "btn-block"
               : ""
               }`}
             onClick={onReSubmit}

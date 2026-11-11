@@ -3,52 +3,51 @@ import * as Scrivito from "scrivito";
 import { isEmpty } from "../utils/lodashPolyfills";
 import { getCaptchaOptions } from "../../../config/scrivitoConfig";
 import { FriendlyCaptcha } from "./FriendlyCaptchaComponent";
+import { FriendlyCaptchaV2 } from "./FriendlyCaptchaV2Component";
 import { GoogleReCaptcha } from "./GoogleReCaptchaComponent";
-import { CaptchaTheme } from "../../../../types/types";
+import { useFormAttributesContext } from "../FormAttributesContext";
+import { MessageBlock } from "./MessageBlock";
+
 interface FormCaptchaProps {
   widget: Scrivito.Widget;
-  alignment: string;
   hidden: boolean;
-  theme: CaptchaTheme;
-  onChangeCaptcha: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 export const FormCaptcha: React.FC<FormCaptchaProps> = ({
-  onChangeCaptcha,
   widget,
-  alignment,
-  hidden,
-  theme
+  hidden
 }) => {
   const options = getCaptchaOptions();
+  const { captchaAlignment, captchaTheme } = useFormAttributesContext()
   if (Scrivito.isInPlaceEditingActive() && isEmpty(options.siteKey)) {
-    return (
-      <div className="text-center missing-site-key">
-        <span>Warning: You activated CAPTCHA but did not set a site key!</span>
-      </div>
-    );
+    return <MessageBlock type="noCaptcha" />;
   }
   if (isEmpty(options.siteKey)) {
     return null;
   }
 
   return (
-    <div hidden={hidden} className={`mb-3 captcha-container ${alignment}`}>
-      {options.captchaType == "google-recaptcha" ? (
-        <GoogleReCaptcha
-          onChangeCaptcha={onChangeCaptcha}
-          siteKey={options.siteKey}
-          widget={widget}
-          theme={theme}
-          key={theme} // force re-render on theme change.
-        />
-      ) : (
+    <div hidden={hidden} className={`mb-3 captcha-container ${captchaAlignment}`}>
+      {options.captchaType === "friendly-captcha" ? (
         <FriendlyCaptcha
-          onChangeCaptcha={onChangeCaptcha}
           siteKey={options.siteKey}
           widget={widget}
           endpoint={"global"}
-          theme={theme}
+          theme={captchaTheme}
+        />
+      ) : options.captchaType === "friendly-captcha-v2" ? (
+        <FriendlyCaptchaV2
+          siteKey={options.siteKey}
+          widget={widget}
+          theme={captchaTheme}
+        />
+      ) : (
+        <GoogleReCaptcha
+          siteKey={options.siteKey}
+          type={options.captchaType}
+          widget={widget}
+          theme={captchaTheme}
+          key={captchaTheme} // force re-render on theme change.
         />
       )}
     </div>

@@ -5,12 +5,19 @@ import { FormConditionalContainerWidget } from "./FormConditionalContainerWidget
 import { StringMap } from "../../../types/types";
 import { getFieldName } from "../FormStepContainerWidget/utils/getFieldName";
 import { isEmpty } from "../FormStepContainerWidget/utils/lodashPolyfills";
+import { useFormContext } from "../FormStepContainerWidget/FormContext";
+import { ConditionProvider } from "./ConditionContext";
 import "./FormConditionalContainerWidget.scss";
+import { MessageBlock } from "../FormStepContainerWidget/components/MessageBlock";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-Scrivito.provideComponent(FormConditionalContainerWidget, ({ widget, onInputChange }: any) => {
+Scrivito.provideComponent(FormConditionalContainerWidget, ({ widget }) => {
   const [selectedConditionId, setSelectedConditionId] = React.useState("");
   const isDropdownHeader = widget.get("headerType") == "dropdown";
+
+  const ctx = useFormContext();
+  if (!ctx) {
+    return <MessageBlock type="noContext" />;
+  }
 
   const resetFieldsInConditions = (conditions: Scrivito.Widget[]) => {
     const resetFields = conditions
@@ -22,7 +29,7 @@ Scrivito.provideComponent(FormConditionalContainerWidget, ({ widget, onInputChan
         return acc;
       }, {} as StringMap<string>);
 
-    onInputChange(resetFields);
+    ctx.onInputChange(resetFields);
   };
 
   const onChangeSelected = (e: React.BaseSyntheticEvent) => {
@@ -30,39 +37,39 @@ Scrivito.provideComponent(FormConditionalContainerWidget, ({ widget, onInputChan
       ? e.target.options[e.target.selectedIndex].id
       : e.target.id;
     setSelectedConditionId(selectedId);
-    if (!onInputChange) {
+    if (!ctx.onInputChange) {
       return;
     }
     // update the field corresponding to the selected condition
-    onInputChange(widget.get("customFieldName"), e.target.value);
+    ctx.onInputChange(widget.get("customFieldName"), e.target.value);
 
     // gather all field names to reset for the current condition
     const conditions: Scrivito.Widget[] = widget.get("conditions");
     resetFieldsInConditions(conditions);
   };
 
+  const getConditionData = (conditionId: string) => {
+    const conditions: Scrivito.Widget[] = widget.get("conditions") || [];
+    let isActive = false;
+    conditions.some(condition => {
+      if (condition.id() === conditionId) {
+        isActive = selectedConditionId === conditionId;
+        return true;
+      }
+      return false;
+    });
+    return { isActive };
+  };
+
   return (
     <>
       <ConditionalHeader widget={widget} onChangeSelected={onChangeSelected} />
-      <Scrivito.ContentTag
-        content={widget}
-        attribute="conditions"
-        widgetProps={{
-          getData: (conditionId: string) => {
-            const conditions: Scrivito.Widget[] = widget.get("conditions");
-            let isActive = false;
-            conditions.some(condition => {
-              if (condition.id() == conditionId) {
-                isActive = selectedConditionId == conditionId;
-                return true;
-              }
-            });
-            return { isActive };
-          },
-          onInputChange
-        }
-        }
-      />
+      <ConditionProvider value={{ getConditionData }}>
+        <Scrivito.ContentTag
+          content={widget}
+          attribute="conditions"
+        />
+      </ConditionProvider>
     </>
   );
 });

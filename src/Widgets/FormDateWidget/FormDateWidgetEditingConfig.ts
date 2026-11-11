@@ -4,10 +4,13 @@ import { insideFormContainerValidation } from "../FormStepContainerWidget/utils/
 import formDateWidgetIcon from "../../assets/images/form_widget_date.svg";
 
 Scrivito.provideEditingConfig("FormDateWidget", {
-  title: "Neoletter Form Date",
+  title: "Automations Form Date",
   thumbnail: formDateWidgetIcon,
   attributes: {
     title: { title: "Label" },
+    alignment: {
+      title: "Alignment",
+    },
     dateType: {
       title: "Format",
       values: [
@@ -15,15 +18,22 @@ Scrivito.provideEditingConfig("FormDateWidget", {
         { value: "datetime-local", title: "Date and time" }
       ]
     },
+    validationText: {
+      title: "Validation Message",
+      description: "This message appears when the input is invalid."
+    },
     customFieldName: { title: "Field name" },
     helpText: { title: "Help text" },
     required: { title: "Mandatory" }
   },
-  properties: ["title", "dateType", "customFieldName", "required", "helpText"],
+  properties: (widget) => ["title", "alignment", "dateType", "customFieldName", "required", ["validationText", { enabled: widget.get("required") }], "helpText"] as any,
   initialContent: {
     title: "Please enter a date",
+    alignment: "left",
     customFieldName: "custom_",
-    dateType: "date"
+    dateType: "date",
+    validationText: "Please enter a date"
+
   },
   validations: [insideFormContainerValidation, customFieldNameValidation]
 });

@@ -11,8 +11,14 @@ export const FormCheckboxWidget = Scrivito.provideWidgetClass(
       ],
       customFieldName: "string",
       label: "html",
+      alignment: [
+        "enum", {
+          values: ["left", "center", "right"]
+        }
+      ],
       required: "boolean",
-      helpText: "html"
+      helpText: "html",
+      validationText: "string"
     }
   }
 );

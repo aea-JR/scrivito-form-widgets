@@ -1,31 +1,32 @@
 import * as React from "react";
 import * as Scrivito from "scrivito";
+import { useFormAttributesContext } from "../FormAttributesContext";
 
 interface FormFooterSingleStepProps {
-  widget: Scrivito.Widget;
   onSubmit: React.MouseEventHandler;
   submitDisabled: boolean;
 }
 
 export const FormFooterSingleStep: React.FC<FormFooterSingleStepProps> =
-  Scrivito.connect(({ widget, onSubmit, submitDisabled }) => {
+  Scrivito.connect(({ onSubmit, submitDisabled }) => {
+
+    const { buttonsSize, buttonsStyle, submitButtonText, singleSubmitButtonAlignment } = useFormAttributesContext();
+
     return (
       <div
-        className={`${
-          widget.get("singleSubmitButtonAlignment") === "block"
-            ? ""
-            : widget.get("singleSubmitButtonAlignment")
-        }`}>
+        className={`${singleSubmitButtonAlignment === "block"
+          ? ""
+          : singleSubmitButtonAlignment
+          }`}>
         <button
-          className={`btn btn-primary${
-            widget.get("singleSubmitButtonAlignment") === "block"
-              ? " btn-block"
-              : ""
-          }`}
+          className={`btn ${buttonsStyle} ${singleSubmitButtonAlignment === "block"
+            ? " btn-block "
+            : " "
+            }${buttonsSize}`}
           onClick={onSubmit}
           disabled={submitDisabled}
-          >
-          {widget.get("submitButtonText") as string}
+        >
+          {submitButtonText}
         </button>
       </div>
     );

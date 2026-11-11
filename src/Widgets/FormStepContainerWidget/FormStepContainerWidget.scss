@@ -1,22 +1,6 @@
 // Styles for FormContainerWidget
 .scrivito-neoletter-form-widgets.form-container-widget {
 
-  .fixed-container-height {
-      overflow-y: auto;
-      overflow-x: hidden;
-    }
-  
-    .no-overscroll-y {
-      overscroll-behavior-y: none;
-    }
-  
-    .thin-scrollbar {
-      scrollbar-width: thin;
-    }
-  
-    .hidden-scrollbar {
-      scrollbar-width: none;
-    }
   .btn-block {
     width: 100%;
   }
@@ -191,7 +175,25 @@
     }
   }
 
+  .invalid-feedback {
+    background: white;
+    width: fit-content;
+    padding: 0.1em 0.3em;
+    border-radius: var(--bs-border-radius, .375rem);
   
+    &.left {
+      text-align: start;
+    }
+  
+    &.center {
+      text-align: center;
+    }
+  
+    &.right {
+      text-align: end;
+    }
+  }
+
 }
 @keyframes rotate-form-submitting-icon {
   0% {
@@ -200,6 +202,29 @@
 
   100% {
     transform: rotate(360deg);
+  }
+}
+
+.form-container-widget form,
+.form-submission-submitting,
+.form-submission-failed,
+.form-submission-succeeded {
+
+  &.fixed-container-height {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  &.no-overscroll-y {
+    overscroll-behavior-y: none;
+  }
+
+  &.thin-scrollbar {
+    scrollbar-width: thin;
+  }
+
+  &.hidden-scrollbar {
+    scrollbar-width: none;
   }
 }
 
@@ -318,19 +343,6 @@ body .scrivito-neoletter-review-form-modal {
         border-bottom-right-radius: calc(.3rem - 1px);
         border-bottom-left-radius: calc(.3rem - 1px);
 
-        button {
-          color: #fff;
-          background-color: var(--bs-primary, #5c9dcd);
-          border-color: var(--bs-primary, #5c9dcd);
-          margin: .25rem;
-          padding: .375rem .75rem;
-          font-size: 1rem;
-          border-radius: .25rem;
-
-          &:hover {
-            background-color: var(--bs-btn-hover-bg, #395aa5);
-          }
-        }
       }
     }
   }
@@ -344,7 +356,6 @@ body .scrivito-neoletter-review-form-modal {
 .bg-greydark,
 .bg-greymiddle {
 
-  .missing-id,
   .missing-site-key,
   .scrivito-neoletter-form-widgets.form-container-widget .linear-scale-container,
   .scrivito-neoletter-form-widgets.form-container-widget .reset-label span,
@@ -384,10 +395,6 @@ body .scrivito-neoletter-review-form-modal {
   }
 }
 
-.scrivito-neoletter-form-widgets.missing-id {
-  display: flex;
-  justify-content: center;
-}
 
 // FormIdComponent tab 
 .neoletter-form-id-tab-container {
@@ -607,3 +614,8 @@ body .scrivito-neoletter-review-form-modal {
     }
   }
 }
+
+.grecaptcha-badge {
+  z-index: 999999;
+}
+

@@ -1,3 +1,5 @@
+import { Widget } from "scrivito";
+
 export type InputValidationElement =
   | HTMLInputElement
   | HTMLSelectElement
@@ -11,7 +13,7 @@ export type ReviewItemContent = {
 export type ReviewContent = Array<Array<ReviewItemContent>>;
 export type StringMap<T> = { [key: string]: T };
 
-export type CaptchaType = "google-recaptcha" | "friendly-captcha" | null;
+export type CaptchaType = "google-recaptcha" | "google-recaptcha-v2" | "google-recaptcha-v3" | "friendly-captcha" | "friendly-captcha-v2" | null;
 export interface CaptchaOptions {
   siteKey: string;
   captchaType: CaptchaType;
@@ -24,4 +26,39 @@ export interface Options {
   instanceId?: string,
   captchaOptions?: CaptchaOptions,
   tracking?: boolean
+}
+
+export interface FormWidgetAttributes {
+  showReview: boolean;
+  showCaptcha: boolean;
+  containerClassNames: string;
+  fixedFormHeight: boolean;
+  formHeight: number;
+  captchaAlignment: string;
+  captchaTheme: CaptchaTheme;
+  showBorder: boolean;
+  submittingMessage: string;
+  submittingMessageType: string;
+  submittedMessage: string;
+  submittedMessageType: string;
+  failedMessage: string;
+  failedMessageType: string;
+  showRetryButton: boolean;
+  retryButtonText: string;
+  retryButtonAlignment: string;
+  buttonsSize: string;
+  buttonsStyle: string;
+  formId: string,
+  showSubmittingPreview: boolean,
+  showSubmittedPreview: boolean,
+  showFailedPreview: boolean,
+  formScrollbarWidth: string,
+  formOverscrollBehavior: string,
+  formType: string,
+  steps: Widget[],
+  backwardButtonText: string,
+  forwardButtonText: string,
+  submitButtonText: string,
+  reviewButtonText: string,
+  singleSubmitButtonAlignment: string,
 }

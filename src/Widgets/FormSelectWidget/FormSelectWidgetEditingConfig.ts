@@ -1,10 +1,11 @@
 import * as Scrivito from "scrivito";
 import { customFieldNameValidation } from "../FormStepContainerWidget/utils/validations/customFieldNameValidation";
 import { insideFormContainerValidation } from "../FormStepContainerWidget/utils/validations/insideFormContainerValidation";
+import { isAlignmentEnabled } from "./selectUtils";
 import formSelectWidgetIcon from "../../assets/images/form_widget_select.svg";
 
 Scrivito.provideEditingConfig("FormSelectWidget", {
-  title: "Neoletter Form Select",
+  title: "Automations Form Select",
   thumbnail: formSelectWidgetIcon,
   attributes: {
     selectionType: {
@@ -13,15 +14,27 @@ Scrivito.provideEditingConfig("FormSelectWidget", {
         { value: "radio", title: "Radio buttons" },
         { value: "dropdown", title: "Dropdown" },
         { value: "multi", title: "Checkboxes" },
-        { value: "linear-scale", title: "Linear scale" }
+        { value: "linear-scale", title: "Linear scale" },
+        { value: "ranking", title: "Ranking" }
       ]
     },
     items: {
       title: "Items"
     },
+    maxSelections: {
+      title: "Maximum selections",
+      description: "Limits how many checkboxes can be selected. Leave empty or set to 0 for no limit. Inform users about this limit in the label or help text."
+    },
     title: { title: "Label" },
+    alignment: {
+      title: "Alignment"
+    },
     customFieldName: { title: "Field name" },
     required: { title: "Mandatory" },
+    validationText: {
+      title: "Validation Message",
+      description: "This message appears when the input is invalid."
+    },
     helpText: { title: "Help text" },
     linearScaleLowerLimit: { title: "Lower scale limit" },
     linearScaleUpperLimit: { title: "Upper scale limit" },
@@ -31,6 +44,10 @@ Scrivito.provideEditingConfig("FormSelectWidget", {
     inlineView: {
       title: "Arrange items horizontally",
       description: "When enabled, all items will be displayed in a single row."
+    },
+    updateRankingNumbers: {
+      title: "Update ranking numbers",
+      description: "When enabled, ranking numbers update after items are reordered."
     },
     useFloatingLabel: {
       title: "Enable floating label",
@@ -46,17 +63,21 @@ Scrivito.provideEditingConfig("FormSelectWidget", {
     return getProperties(widget as unknown as Scrivito.Widget);
   },
   initialContent: {
+    alignment: "left",
     selectionType: "radio",
     title: "Please choose",
     items: ["Yes", "No"],
+    maxSelections: 0,
     customFieldName: "custom_",
     linearScaleLowerLimit: "1",
     linearScaleUpperLimit: "5",
     clearSelectionButtonText: "Clear selection",
     inlineView: false,
+    updateRankingNumbers: false,
     useFloatingLabel: false,
     navigateOnClick: false,
-    showClearSelectionButton: true
+    showClearSelectionButton: true,
+    validationText: "Please select an item"
   },
   validations: [
     insideFormContainerValidation,
@@ -75,20 +96,31 @@ Scrivito.provideEditingConfig("FormSelectWidget", {
     customFieldNameValidation
   ]
 });
-
+//TODO: improve order
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getProperties(widget: Scrivito.Widget): any[] {
-  const type = widget.get("selectionType");
+  const type = widget.get("selectionType") as string;
+  const required = (widget.get("required") as boolean) && type !== "ranking";
+  const showClearSelectionButton = widget.get("showClearSelectionButton") as boolean;
+
   const props = [
     "selectionType",
     "title",
+    ["alignment", { enabled: isAlignmentEnabled(widget) }],
+    "helpText",
     "customFieldName",
-    ["required", { enabled: type !== "multi" }],
-    "helpText"
+    ["required", { enabled: type !== "ranking" }],
+    ["validationText", { enabled: required }]
   ];
-  // show/hide inlineView
+  // show/hide inlineView for items
   if (type == "radio" || type == "multi") {
     props.splice(3, 0, "inlineView");
+  }
+  if (type == "multi") {
+    props.splice(4, 0, "maxSelections");
+  }
+  if (type == "ranking") {
+    props.splice(4, 0, "updateRankingNumbers");
   }
   // show/hide items
   if (type != "linear-scale") {
@@ -106,19 +138,15 @@ function getProperties(widget: Scrivito.Widget): any[] {
   }
   // show/hide useFloatingLabel
   if (type == "dropdown") {
-    props.splice(props.length - 2, 0, "useFloatingLabel");
+    props.splice(props.length - 3, 0, "useFloatingLabel");
   }
   // show/hide navigateOnClick
   if (type == "radio" && !widget.container()?.get("isSingleStep")) {
     props.splice(4, 0, "navigateOnClick");
   }
-  // show/hide showClearSelectionButton
-  if (!widget.get("required") && (type == "radio" || type == "linear-scale")) {
-    props.splice(props.length - 2, 0, "showClearSelectionButton");
-  }
-  // show/hide clearSelectionButtonText
-  if (!widget.get("required") && (type == "linear-scale" || type == "radio") && widget.get("showClearSelectionButton")) {
-    props.splice(props.length - 2, 0, "clearSelectionButtonText");
+  // show/hide showClearSelectionButton & text
+  if (!required && (type == "radio" || type == "linear-scale")) {
+    props.splice(props.length - 3, 0, "showClearSelectionButton", ["clearSelectionButtonText", { enabled: showClearSelectionButton }]);
   }
   return props;
 }
